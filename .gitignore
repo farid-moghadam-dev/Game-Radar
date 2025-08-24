@@ -1,0 +1,77 @@
+### Android ###
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# ART/Dalvik VM files
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+build/
+
+# Gradle files
+.gradle/
+**/build/
+!gradle-wrapper.jar
+gradle-app.setting
+
+# Local configuration
+local.properties
+*.keystore
+*.jks
+*.hprof
+
+# Log files
+*.log
+
+# Android Studio
+.idea/
+*.iml
+.cache/
+captures/
+.externalNativeBuild/
+
+# NDK
+obj/
+.cxx/
+
+# Jetpack Compose
+*.kotlin_metadata/
+*.kotlin_module/
+
+# Misc
+.DS_Store
+Thumbs.db
+
+# Google Services (if any, uncomment if needed)
+# google-services.json
+# GoogleService-Info.plist
+
+# Ignore signing configs (if you have release signing files locally)
+# signing.properties
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+
+# Miscellaneous
+*.orig
+*.rej
+*.swp
+*.swo
+*.tmp
+*.bak
+*.idea/caches/build_file_checksums.ser
+
+# Node / Yarn (if using React Native or hybrid parts)
+node_modules/
+npm-debug.log
+yarn-error.log
