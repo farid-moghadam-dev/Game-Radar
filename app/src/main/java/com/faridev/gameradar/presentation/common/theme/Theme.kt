@@ -1,4 +1,4 @@
-package com.faridev.gameradar.presentation.compose.theme
+package com.faridev.gameradar.presentation.common.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

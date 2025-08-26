@@ -1,4 +1,4 @@
-package com.faridev.gameradar.presentation.compose.theme
+package com.faridev.gameradar.presentation.common.theme
 
 import androidx.compose.ui.text.font.FontFamily
 import com.faridev.gameradar.R
