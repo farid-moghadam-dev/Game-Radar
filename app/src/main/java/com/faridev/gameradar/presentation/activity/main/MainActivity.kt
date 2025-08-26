@@ -1,4 +1,4 @@
-package com.faridev.gameradar
+package com.faridev.gameradar.presentation.activity.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
