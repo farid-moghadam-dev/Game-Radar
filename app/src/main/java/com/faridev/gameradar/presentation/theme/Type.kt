@@ -1,4 +1,4 @@
-package com.faridev.gameradar.ui.theme
+package com.faridev.gameradar.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
