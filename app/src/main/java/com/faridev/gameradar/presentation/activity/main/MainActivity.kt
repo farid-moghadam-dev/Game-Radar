@@ -33,12 +33,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.faridev.gameradar.R
 import com.faridev.gameradar.core.util.showShortToast
 import com.faridev.gameradar.presentation.common.theme.GameRadarTheme
+import com.faridev.gameradar.presentation.feature.NavRoutes
+import com.faridev.gameradar.presentation.feature.detail.GameDetailScreen
+import com.faridev.gameradar.presentation.feature.home.HomeScreen
 
 class MainActivity : ComponentActivity() {
+
+    private val navDrawerItems = listOf(
+        "Platforms",
+        "Publishers",
+        "Developers",
+        "Genres",
+        "Stores"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,13 +62,7 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainNavigationDrawer(
                         modifier = Modifier.padding(innerPadding),
-                        drawerItemsList = listOf(
-                            "Platforms",
-                            "Publishers",
-                            "Developers",
-                            "Genres",
-                            "Stores"
-                        )
+                        drawerItemsList = navDrawerItems
                     )
                 }
             }
@@ -130,5 +139,23 @@ private fun DrawerItem(itemTitle: String, onClick: () -> Unit = {}) {
 
 @Composable
 private fun MainScreenContent(navController: NavHostController) {
-    //TODO implement later
+    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        NavHost(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            navController = navController,
+            startDestination = NavRoutes.Home
+        ) {
+            composable<NavRoutes.Home> {
+                HomeScreen { gameId ->
+                    navController.navigate(NavRoutes.Detail(gameId))
+                }
+            }
+            composable<NavRoutes.Detail> { backStackEntry ->
+                val detail = backStackEntry.toRoute<NavRoutes.Detail>()
+                GameDetailScreen(gameId = detail.gameId)
+            }
+        }
+    }
 }
