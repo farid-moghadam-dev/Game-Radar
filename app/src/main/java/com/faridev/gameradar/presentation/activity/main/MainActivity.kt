@@ -1,7 +1,6 @@
 package com.faridev.gameradar.presentation.activity.main
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -28,8 +27,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -47,9 +49,6 @@ import com.faridev.gameradar.presentation.common.theme.GameRadarTheme
 import com.faridev.gameradar.presentation.feature.NavRoutes
 import com.faridev.gameradar.presentation.feature.detail.GameDetailScreen
 import com.faridev.gameradar.presentation.feature.home.HomeScreen
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
 
@@ -162,11 +161,10 @@ private fun DrawerItem(itemTitle: String, onClick: () -> Unit = {}) {
 
 @Composable
 private fun MainScreenContent(navController: NavHostController) {
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+    Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
         NavHost(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding),
+                .fillMaxSize(),
             navController = navController,
             startDestination = NavRoutes.Home
         ) {
