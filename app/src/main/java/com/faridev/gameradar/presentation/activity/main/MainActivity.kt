@@ -1,7 +1,9 @@
 package com.faridev.gameradar.presentation.activity.main
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
@@ -26,6 +28,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -43,6 +47,9 @@ import com.faridev.gameradar.presentation.common.theme.GameRadarTheme
 import com.faridev.gameradar.presentation.feature.NavRoutes
 import com.faridev.gameradar.presentation.feature.detail.GameDetailScreen
 import com.faridev.gameradar.presentation.feature.home.HomeScreen
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
 
@@ -59,6 +66,22 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GameRadarTheme {
+                var showExitToast by remember { mutableStateOf(false) }
+
+                DoubleBackPressToExit(
+                    onFirstBackPress = {
+                        showExitToast = true
+                    },
+                    onExit = {
+                        finish()
+                    }
+                )
+
+                if (showExitToast) {
+                    showShortToast(R.string.double_tap_to_exit)
+                    showExitToast = false
+                }
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     MainNavigationDrawer(
                         modifier = Modifier.padding(innerPadding),
@@ -156,6 +179,25 @@ private fun MainScreenContent(navController: NavHostController) {
                 val detail = backStackEntry.toRoute<NavRoutes.Detail>()
                 GameDetailScreen(gameId = detail.gameId)
             }
+        }
+    }
+}
+
+@Composable
+fun DoubleBackPressToExit(
+    exitTimeout: Long = 2000L,
+    onExit: () -> Unit,
+    onFirstBackPress: () -> Unit
+) {
+    var lastBackPressTime by remember { mutableLongStateOf(0L) }
+
+    BackHandler {
+        val currentTime = System.currentTimeMillis()
+        if (currentTime - lastBackPressTime < exitTimeout) {
+            onExit()
+        } else {
+            onFirstBackPress()
+            lastBackPressTime = currentTime
         }
     }
 }

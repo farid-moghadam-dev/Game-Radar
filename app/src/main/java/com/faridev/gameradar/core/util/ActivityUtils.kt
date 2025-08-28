@@ -40,23 +40,3 @@ fun ComponentActivity.configFullScreenActivity() {
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     }
 }
-
-@Composable
-fun BackPressHandlerWithDoubleTap(
-    exitTimeout: Long = 2000L,
-    onExit: () -> Unit,
-    showDoubleTapMessage: () -> Unit
-) {
-    var lastBackPressed by remember { mutableLongStateOf(0L) }
-    val backDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-
-    BackHandler {
-        val currentTime = System.currentTimeMillis()
-        if (currentTime - lastBackPressed < exitTimeout) {
-            onExit()
-        } else {
-            showDoubleTapMessage()
-            lastBackPressed = currentTime
-        }
-    }
-}
