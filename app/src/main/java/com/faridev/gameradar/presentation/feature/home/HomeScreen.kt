@@ -4,9 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +13,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +43,7 @@ import com.faridev.gameradar.data.model.GamesListResDto
 import com.faridev.gameradar.domain.model.GameResult
 import com.faridev.gameradar.domain.model.GamesList
 import com.faridev.gameradar.presentation.common.components.AnimatedTouchBox
+import com.faridev.gameradar.presentation.common.components.ErrorItem
 import com.faridev.gameradar.presentation.common.components.ImageCarousel
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
@@ -179,36 +177,6 @@ private fun BoxScope.GameForegroundContent(
             color = Color.White,
             textAlign = TextAlign.Center
         )
-    }
-}
-
-@Composable
-private fun ErrorItem(
-    message: String,
-    onRetry: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = onRetry) {
-                Text("Retry", style = MaterialTheme.typography.headlineSmall)
-            }
-        }
     }
 }
 
