@@ -1,0 +1,8 @@
+# Copy this file to `local.properties` and fill in your own values.
+# `local.properties` is gitignored and must never be committed.
+
+# Android SDK location — Android Studio writes this automatically.
+sdk.dir=/path/to/your/Android/Sdk
+
+# RAWG API key — get a free one at https://rawg.io/apidocs
+API_KEY=your_rawg_api_key_here

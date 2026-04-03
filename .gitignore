@@ -1,0 +1,57 @@
+# Gradle
+.gradle/
+build/
+**/build/
+!gradle-wrapper.jar
+gradle-app.setting
+
+# Android build outputs
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+out/
+release/
+captures/
+.externalNativeBuild/
+.cxx/
+obj/
+
+# Local config & secrets (never commit API keys or signing material)
+local.properties
+*.keystore
+*.jks
+*.hprof
+signing.properties
+keystore.properties
+google-services.json
+
+# IDE — Android Studio / IntelliJ
+.idea/
+*.iml
+.cache/
+.kotlin/
+
+# IDE — VS Code
+.vscode/
+
+# Assistant tooling
+.claude/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.orig
+*.rej
+*.swp
+*.swo
+*.tmp
+*.bak
