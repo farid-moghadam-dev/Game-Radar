@@ -1,21 +1,31 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Preserve line numbers for readable crash reports, without leaking source file names.
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# --- Kotlinx Serialization ----------------------------------------------------
+# Keep @Serializable classes, their companion $serializer, and generated metadata.
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keep,includedescriptorclasses class com.faridev.gameradar.**$$serializer { *; }
+-keepclassmembers class com.faridev.gameradar.** {
+    *** Companion;
+}
+-keepclasseswithmembers class com.faridev.gameradar.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# --- Ktor ---------------------------------------------------------------------
+-dontwarn io.ktor.**
+-keep class io.ktor.** { *; }
+
+# --- Kotlin coroutines --------------------------------------------------------
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepclassmembers class kotlinx.coroutines.** {
+    volatile <fields>;
+}
+
+# --- Compose / reflection used by Koin ----------------------------------------
+-keep class org.koin.** { *; }
+-dontwarn org.koin.**
