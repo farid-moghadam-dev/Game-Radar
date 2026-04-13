@@ -49,7 +49,7 @@ _Screenshots coming soon._
 
 - **Presentation** depends only on **Domain**.
 - **Data** implements the **Domain** repository contract.
-- **DI (Koin)** wires the graph together at the edges, in `MyApplication`.
+- **DI (Koin)** wires the graph together at the edges, in `GameRadarApp`.
 - `UiState<T>` is a sealed class (`Loading | Success | Error`) that travels from data → UI for one-shot calls; `PagingData<T>` handles paginated streams.
 - One generic `GameEntityType` enum (Platforms / Publishers / Developers / Genres / Stores) drives a single reusable stack of DTO → mapper → repository → use case → view model → screen, so adding a new catalog endpoint is a one-line enum change.
 
@@ -58,7 +58,7 @@ _Screenshots coming soon._
 ```
 com.faridev.gameradar
 ├── core/                       // app-wide bootstrap + helpers
-│   ├── MyApplication.kt        // Koin startup, Timber
+│   ├── GameRadarApp.kt         // Koin startup, Timber
 │   └── util/                   // activity, compose, ext, icon, toast helpers
 ├── data/
 │   ├── model/                  // RAWG response DTOs
