@@ -1,8 +1,15 @@
 # Game Radar
 
+[![CI](https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
+[![Compose](https://img.shields.io/badge/Jetpack_Compose-2025.10-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
+[![Min SDK](https://img.shields.io/badge/minSdk-24-3DDC84?logo=android&logoColor=white)](https://developer.android.com/tools/releases/platforms)
+[![Target SDK](https://img.shields.io/badge/targetSdk-35-3DDC84?logo=android&logoColor=white)](https://developer.android.com/tools/releases/platforms)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A modern Android app for discovering video games, powered by the [RAWG Video Games Database](https://rawg.io/apidocs). Browse a paginated catalog of games, open rich detail pages with ESRB ratings, Metacritic scores, platforms, stores and descriptions, and drill into curated lists of **Platforms**, **Publishers**, **Developers**, **Genres**, and **Stores** to see all the games each one is associated with.
 
-Built end-to-end with **100% Kotlin** and **Jetpack Compose**, following a **Clean Architecture + MVVM** layering and leaning on a modern, fully-coroutine-based stack (Ktor, Koin, Paging 3, Coil).
+Built end-to-end with **100% Kotlin** and **Jetpack Compose**, following a **Clean Architecture + MVVM** layering and leaning on a modern, fully-coroutine-based stack (Ktor, Koin, Paging 3, Coil). Ships with R8 minification, static analysis (Spotless + Detekt + Android Lint), unit tests (MockEngine, Turbine, kotlinx-coroutines-test), a Compose UI test, and a GitHub Actions pipeline.
 
 ---
 
@@ -19,8 +26,14 @@ Built end-to-end with **100% Kotlin** and **Jetpack Compose**, following a **Cle
 
 ## Screenshots
 
-<!-- Add screenshots here once captured: docs/screenshots/home.png, detail.png, drawer.png, entity-list.png, entity-detail.png -->
-_Screenshots coming soon._
+<p align="center">
+  <img src="docs/screenshots/home.png"          width="24%" alt="Home feed" />
+  <img src="docs/screenshots/detail.png"        width="24%" alt="Game detail" />
+  <img src="docs/screenshots/drawer.png"        width="24%" alt="Navigation drawer" />
+  <img src="docs/screenshots/entity-detail.png" width="24%" alt="Entity detail" />
+</p>
+
+> Drop captures in [`docs/screenshots/`](docs/screenshots/) — see that folder's README for a suggested capture list.
 
 ---
 
@@ -194,7 +207,22 @@ Endpoints consumed:
 - `GET /{developers|publishers|genres|platforms|stores}/{id}` — entity details
 - `GET /games?{developers|publishers|genres|platforms|stores}={id}&page=&page_size=` — games filtered by entity
 
-Error handling is centralized in `safeApiCall`, which maps every Ktor exception (`ClientRequestException`, `ServerResponseException`, `HttpRequestTimeoutException`, …) to a `UiState.Error` with a human-readable message, while still propagating `CancellationException`.
+Error handling is centralized in `safeApiCall`, which maps every Ktor, IO, and serialization exception into a typed `AppError` (`NoConnection`, `Timeout`, `Http(code)`, `Serialization`, `Unknown`) wrapped in `UiState.Error`. `AppError.userMessage` owns the user-facing string so UI and logs stay in sync. `CancellationException` is always re-thrown so coroutines remain cooperatively cancellable.
+
+---
+
+## Quality
+
+| Tool | Command | Enforces |
+|---|---|---|
+| **Spotless (ktlint)** | `./gradlew spotlessCheck` / `spotlessApply` | Kotlin formatting |
+| **Detekt** | `./gradlew detekt` | Static analysis (complexity, style, naming, exceptions) |
+| **Android Lint** | `./gradlew :app:lintDebug` | Framework + lib linting with a baseline file |
+| **Unit tests** | `./gradlew testDebugUnitTest` | Mappers, `safeApiCall`, repository (Ktor MockEngine), view models (Turbine + kotlinx-coroutines-test) |
+| **Compose UI tests** | `./gradlew :app:connectedDebugAndroidTest` | Shared Compose components (e.g. `ErrorItem`) |
+| **R8 / minification** | Enabled on release with tuned ProGuard rules for kotlinx-serialization, Ktor, coroutines, and Koin |
+
+Every push / PR to `main` runs Spotless, Detekt, unit tests, Android Lint, and `assembleDebug` in [GitHub Actions](.github/workflows/ci.yml) — and uploads the debug APK as a build artifact.
 
 ---
 
@@ -202,11 +230,11 @@ Error handling is centralized in `safeApiCall`, which maps every Ktor exception 
 
 - [ ] Search (RAWG `?search=` parameter)
 - [ ] Favorites (local Room persistence)
-- [ ] Offline cache for the games feed
+- [ ] Offline cache for the games feed with a Paging 3 `RemoteMediator`
 - [ ] Screenshots gallery on the game detail screen
 - [ ] Dark-mode-aware dynamic color (Material You)
-- [ ] Unit tests for repositories and use cases
-- [ ] Instrumentation tests for the navigation graph
+- [ ] Split into Gradle modules (`:core`, `:data`, `:domain`, `:feature-*`)
+- [ ] Baseline Profile generation for startup / frame metrics
 
 ---
 
