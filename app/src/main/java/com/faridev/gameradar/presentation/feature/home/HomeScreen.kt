@@ -43,6 +43,7 @@ import coil3.request.placeholder
 import com.faridev.gameradar.R
 import com.faridev.gameradar.domain.model.GameResult
 import com.faridev.gameradar.presentation.common.components.AnimatedTouchBox
+import com.faridev.gameradar.presentation.common.components.GamesItemCard
 import com.faridev.gameradar.presentation.common.components.ImageCarousel
 import org.koin.androidx.compose.koinViewModel
 
@@ -91,6 +92,7 @@ private fun GamesListScreen(
             val game = gamesLazyPagingItems[index]
             game?.let {
                 GamesItemCard(
+                    modifier = Modifier.padding(5.dp),
                     item = it,
                     onNavigateToDetail = onNavigateToDetail
                 )
@@ -180,79 +182,5 @@ private fun ErrorItem(
                 Text("Retry", style = MaterialTheme.typography.headlineSmall)
             }
         }
-    }
-}
-
-@Composable
-private fun GamesItemCard(
-    item: GameResult,
-    onNavigateToDetail: (gameId: Int) -> Unit
-) {
-    // Create stable lambda to avoid recomposition
-    val onItemClick = remember(item.id) {
-        { onNavigateToDetail(item.id) }
-    }
-
-    Card(
-        modifier = Modifier.padding(5.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-    ) {
-        AnimatedTouchBox(
-            modifier = Modifier.fillMaxWidth(),
-            overlayColor = MaterialTheme.colorScheme.onSurface,
-            onClick = onItemClick,
-            backgroundContent = {
-                GameBackgroundImage(
-                    imageUrl = item.backgroundImage
-                )
-            },
-            foregroundContent = { isPressed ->
-                GameForegroundContent(
-                    isPressed = isPressed,
-                    gameName = item.name
-                )
-            }
-        )
-    }
-}
-
-@Composable
-private fun GameBackgroundImage(
-    imageUrl: String?
-) {
-    AsyncImage(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp),
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
-            .crossfade(true)
-            .bitmapConfig(Bitmap.Config.RGB_565)
-            .diskCachePolicy(CachePolicy.ENABLED)
-            .memoryCachePolicy(CachePolicy.ENABLED)
-            .placeholder(R.drawable.ic_placeholder)
-            .build(),
-        placeholder = painterResource(R.drawable.ic_placeholder),
-        contentDescription = "Game Image",
-        contentScale = ContentScale.Crop
-    )
-}
-
-@Composable
-private fun BoxScope.GameForegroundContent(
-    isPressed: State<Boolean>,
-    gameName: String
-) {
-    if (isPressed.value) {
-        Text(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .fillMaxWidth()
-                .padding(5.dp),
-            text = gameName,
-            style = MaterialTheme.typography.titleMedium,
-            color = Color.White,
-            textAlign = TextAlign.Center
-        )
     }
 }

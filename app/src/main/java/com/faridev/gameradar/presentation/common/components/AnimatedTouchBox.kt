@@ -29,8 +29,8 @@ fun AnimatedTouchBox(
     shape: Shape = RectangleShape,
     onClick: (() -> Unit)? = null,
     pressScale : Float = 1.3f,
-    backgroundContent: @Composable () -> Unit,
-    foregroundContent: @Composable BoxScope.(State<Boolean>) -> Unit,
+    backgroundContent: @Composable () -> Unit = {},
+    foregroundContent: @Composable BoxScope.(State<Boolean>) -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed = interactionSource.collectIsPressedAsState()

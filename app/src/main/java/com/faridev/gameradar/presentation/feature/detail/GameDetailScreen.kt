@@ -43,6 +43,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -61,6 +62,7 @@ import com.faridev.gameradar.presentation.common.components.AnimatedTouchBox
 import com.faridev.gameradar.presentation.common.components.ClickableWordsText
 import com.faridev.gameradar.presentation.common.components.ErrorItem
 import com.faridev.gameradar.presentation.common.components.ExpandableText
+import com.faridev.gameradar.presentation.common.components.ImageWithOverlay
 import com.faridev.gameradar.presentation.common.components.ShowDefaultTextTooltip
 import com.faridev.gameradar.presentation.common.state.UiState
 import com.faridev.gameradar.presentation.common.theme.Fonts
@@ -120,7 +122,10 @@ private fun DetailTopBar(
             .fillMaxWidth()
             .height(200.dp)
     ) {
-        ImageWithOverlay(gameDetails.backgroundImageAdditional ?: gameDetails.backgroundImage ?: "")
+        ImageWithOverlay(
+            modifier = Modifier.fillMaxSize(),
+            gameDetails.backgroundImageAdditional ?: gameDetails.backgroundImage
+        )
 
         Row(
             Modifier
@@ -146,25 +151,6 @@ private fun DetailTopBar(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun ImageWithOverlay(imageUrl: String) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        AsyncImage(
-            modifier = Modifier.fillMaxSize(),
-            model = imageUrl,
-            contentDescription = "Image With Overlay",
-            contentScale = ContentScale.Crop,
-            placeholder = painterResource(R.drawable.gaming_banner_placeholder),
-            error = painterResource(R.drawable.gaming_banner_placeholder)
-        )
-        Box(
-            modifier = Modifier
-                .matchParentSize()
-                .background(MaterialTheme.colorScheme.onSurface)
-        )
     }
 }
 
@@ -339,6 +325,7 @@ private fun DetailContent(
                     modifier = Modifier.fillMaxWidth(),
                     text = gameDetails.descriptionRaw,
                     style = MaterialTheme.typography.labelLarge,
+                    textAlign = TextAlign.Justify,
                     maxLines = 5,
                     lineHeight = 18.sp
                 )
@@ -510,7 +497,10 @@ private fun StoreItem(store: Store) {
                 )
             },
             backgroundContent = {
-                ImageWithOverlay(imageUrl = store.imageBackground ?: "")
+                ImageWithOverlay(
+                    modifier = Modifier.fillMaxSize(),
+                    imageUrl = store.imageBackground
+                )
             },
             foregroundContent = {
                 Row(
