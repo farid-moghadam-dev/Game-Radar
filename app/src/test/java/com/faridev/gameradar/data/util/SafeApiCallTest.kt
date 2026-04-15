@@ -2,6 +2,7 @@ package com.faridev.gameradar.data.util
 
 import com.faridev.gameradar.domain.model.AppError
 import com.faridev.gameradar.presentation.common.state.UiState
+import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerializationException
@@ -29,7 +30,7 @@ class SafeApiCallTest {
     @Test
     fun `maps HttpRequestTimeoutException to Timeout`() = runBlocking {
         val result = safeApiCall<String> {
-            throw HttpRequestTimeoutException("/games", 5_000)
+            throw HttpRequestTimeoutException(HttpRequestBuilder().apply { url("https://test") })
         }
         assertTrue(result is UiState.Error)
         assertEquals(AppError.Timeout, (result as UiState.Error).error)
