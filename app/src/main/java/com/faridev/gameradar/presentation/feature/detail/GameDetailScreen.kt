@@ -79,14 +79,12 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = koinViewModel(), gameId: I
     val scrollState = rememberScrollState()
 
     LaunchedEffect(gameId) {
-        viewModel.fetchGameDetails(gameId)
+        viewModel.load(gameId)
     }
 
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        when (val state = viewModel.uiState) {
-            is UiState.Error -> ErrorItem(message = state.message) {
-                viewModel.fetchGameDetails(gameId)
-            }
+        when (val state = viewModel.detailsState) {
+            is UiState.Error -> ErrorItem(message = state.message, onRetry = { viewModel.retry() })
 
             UiState.Loading -> CircularProgressIndicator()
             is UiState.Success -> {

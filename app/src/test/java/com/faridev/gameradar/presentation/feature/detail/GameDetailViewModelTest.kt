@@ -47,42 +47,59 @@ class GameDetailViewModelTest {
         val vm = GameDetailViewModel(
             FetchGameDetailsUseCase(FakeRepo(UiState.Success(fakeGameDetails(1, "x"))))
         )
-        assertEquals(UiState.Loading, vm.uiState)
+        assertEquals(UiState.Loading, vm.detailsState)
     }
 
     @Test
-    fun `fetchGameDetails moves state to Success`() = runTest(dispatcher) {
+    fun `load moves state to Success`() = runTest(dispatcher) {
         val expected = fakeGameDetails(id = 42, name = "Half-Life 3")
         val vm = GameDetailViewModel(
             FetchGameDetailsUseCase(FakeRepo(UiState.Success(expected)))
         )
 
-        vm.fetchGameDetails(gameId = 42)
+        vm.load(gameId = 42)
         dispatcher.scheduler.advanceUntilIdle()
 
-        val state = vm.uiState
+        val state = vm.detailsState
         assertTrue(state is UiState.Success)
         assertEquals("Half-Life 3", (state as UiState.Success).data.name)
     }
 
     @Test
-    fun `fetchGameDetails surfaces repository errors`() = runTest(dispatcher) {
+    fun `load surfaces repository errors`() = runTest(dispatcher) {
         val vm = GameDetailViewModel(
             FetchGameDetailsUseCase(FakeRepo(UiState.Error(AppError.NoConnection)))
         )
 
-        vm.fetchGameDetails(gameId = 1)
+        vm.load(gameId = 1)
         dispatcher.scheduler.advanceUntilIdle()
 
-        val state = vm.uiState
+        val state = vm.detailsState
         assertTrue(state is UiState.Error)
         assertEquals(AppError.NoConnection, (state as UiState.Error).error)
+    }
+
+    @Test
+    fun `retry re-invokes details fetch after an error`() = runTest(dispatcher) {
+        val repo = FakeRepo(UiState.Error(AppError.Timeout))
+        val vm = GameDetailViewModel(FetchGameDetailsUseCase(repo))
+
+        vm.load(gameId = 7)
+        dispatcher.scheduler.advanceUntilIdle()
+        assertTrue(vm.detailsState is UiState.Error)
+
+        repo.detailsResult = UiState.Success(fakeGameDetails(id = 7, name = "Portal 3"))
+        vm.retry()
+        dispatcher.scheduler.advanceUntilIdle()
+
+        assertTrue(vm.detailsState is UiState.Success)
+        assertEquals("Portal 3", (vm.detailsState as UiState.Success).data.name)
     }
 
     // -- Fakes ----------------------------------------------------------------
 
     private class FakeRepo(
-        private val detailsResult: UiState<GameDetails>
+        var detailsResult: UiState<GameDetails>
     ) : GameRepository {
         override fun getGamesStream(): Flow<PagingData<GameResult>> = flowOf(PagingData.empty())
         override suspend fun fetchGamesList(page: Int, pageSize: Int): UiState<GamesList> =

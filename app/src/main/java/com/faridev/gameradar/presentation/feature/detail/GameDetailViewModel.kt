@@ -14,14 +14,26 @@ class GameDetailViewModel(
     private val fetchGameDetailsUseCase: FetchGameDetailsUseCase
 ) : ViewModel() {
 
-    var uiState: UiState<GameDetails> by mutableStateOf(UiState.Loading)
+    var detailsState: UiState<GameDetails> by mutableStateOf(UiState.Loading)
         private set
 
+    private var currentGameId: Int? = null
 
-    fun fetchGameDetails(gameId: Int) {
+    fun load(gameId: Int) {
+        if (currentGameId == gameId && detailsState is UiState.Success) return
+        currentGameId = gameId
+        fetchDetails(gameId)
+    }
+
+    fun retry() {
+        val id = currentGameId ?: return
+        fetchDetails(id)
+    }
+
+    private fun fetchDetails(gameId: Int) {
         viewModelScope.launch {
-            uiState = UiState.Loading
-            uiState = fetchGameDetailsUseCase.invoke(gameId)
+            detailsState = UiState.Loading
+            detailsState = fetchGameDetailsUseCase.invoke(gameId)
         }
     }
 }
