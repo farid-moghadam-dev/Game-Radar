@@ -30,6 +30,7 @@ import com.faridev.gameradar.core.util.stripHtml
 import com.faridev.gameradar.domain.model.GameEntityDetails
 import com.faridev.gameradar.domain.model.GameEntityType
 import com.faridev.gameradar.domain.model.GameResult
+import com.faridev.gameradar.presentation.common.components.DetailSection
 import com.faridev.gameradar.presentation.common.components.ErrorItem
 import com.faridev.gameradar.presentation.common.components.ExpandableText
 import com.faridev.gameradar.presentation.common.components.FullWidthLoader
@@ -78,12 +79,10 @@ private fun EntityDetailContent(
 
         details.description?.stripHtml()?.takeIf { it.isNotBlank() }?.let { text ->
             item(span = { GridItemSpan(2) }) {
-                Column(Modifier.padding(horizontal = 8.dp, vertical = 12.dp)) {
-                    Text(
-                        text = "About",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                    Spacer(Modifier.height(6.dp))
+                DetailSection(
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                    title = "About"
+                ) {
                     ExpandableText(
                         modifier = Modifier.fillMaxWidth(),
                         text = text,
@@ -108,10 +107,9 @@ private fun EntityDetailContent(
         }
 
         item(span = { GridItemSpan(2) }) {
-            Text(
-                modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp),
-                text = "Games",
-                style = MaterialTheme.typography.titleLarge
+            DetailSection(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                title = "Games"
             )
         }
 

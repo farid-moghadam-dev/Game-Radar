@@ -60,6 +60,7 @@ import com.faridev.gameradar.domain.model.ParentPlatformInfo
 import com.faridev.gameradar.domain.model.Store
 import com.faridev.gameradar.presentation.common.components.AnimatedTouchBox
 import com.faridev.gameradar.presentation.common.components.ClickableWordsText
+import com.faridev.gameradar.presentation.common.components.DetailSection
 import com.faridev.gameradar.presentation.common.components.ErrorItem
 import com.faridev.gameradar.presentation.common.components.ExpandableText
 import com.faridev.gameradar.presentation.common.components.ImageWithOverlay
@@ -318,7 +319,7 @@ private fun DetailContent(
     val context = LocalContext.current
     Column(modifier = modifier) {
         gameDetails.descriptionRaw?.let {
-            DetailsData("About") {
+            DetailSection("About") {
                 ExpandableText(
                     modifier = Modifier.fillMaxWidth(),
                     text = gameDetails.descriptionRaw,
@@ -332,7 +333,7 @@ private fun DetailContent(
 
         Row(Modifier.fillMaxWidth()) {
             gameDetails.released?.let {
-                DetailsData(modifier = Modifier.weight(1f), title = "Release Date") {
+                DetailSection(modifier = Modifier.weight(1f), title = "Release Date") {
                     Text(
                         text = gameDetails.released,
                         style = MaterialTheme.typography.labelLarge,
@@ -341,7 +342,7 @@ private fun DetailContent(
                 }
             }
 
-            DetailsData(modifier = Modifier.weight(1f), title = "Age Rating") {
+            DetailSection(modifier = Modifier.weight(1f), title = "Age Rating") {
                 ShowDefaultTextTooltip(
                     tooltipText = gameDetails.esrbRating.description
                 ) { tooltipState, scope ->
@@ -372,7 +373,7 @@ private fun DetailContent(
         }
 
         if (gameDetails.genres.isNotEmpty()) {
-            DetailsData("Genres") {
+            DetailSection("Genres") {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = gameDetails.genres.mapNotNull { it.name }.joinToString(", "),
@@ -383,7 +384,7 @@ private fun DetailContent(
         }
 
         if (gameDetails.publishers.isNotEmpty()) {
-            DetailsData("Publisher") {
+            DetailSection("Publisher") {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = gameDetails.publishers.mapNotNull { it.name }.joinToString(", "),
@@ -394,7 +395,7 @@ private fun DetailContent(
         }
 
         if (gameDetails.developers.isNotEmpty()) {
-            DetailsData("Developer") {
+            DetailSection("Developer") {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = gameDetails.developers.mapNotNull { it.name }.joinToString(", "),
@@ -405,7 +406,7 @@ private fun DetailContent(
         }
 
         if (gameDetails.platforms.isNotEmpty()) {
-            DetailsData("Platforms") {
+            DetailSection("Platforms") {
                 ClickableWordsText(
                     text = gameDetails.platforms.mapNotNull { it.platform?.name }
                         .joinToString(", "),
@@ -419,7 +420,7 @@ private fun DetailContent(
         }
 
         if (gameDetails.stores.isNotEmpty()) {
-            DetailsData("Stores") {
+            DetailSection("Stores") {
                 LazyRow {
                     items(gameDetails.stores.mapNotNull { it.store }) { store ->
                         StoreItem(store)
@@ -429,7 +430,7 @@ private fun DetailContent(
         }
 
         if (gameDetails.tags.isNotEmpty()) {
-            DetailsData("Tags") {
+            DetailSection("Tags") {
                 ClickableWordsText(
                     text = gameDetails.tags.mapNotNull { it.name }.joinToString(", "),
                     style = MaterialTheme.typography.labelLarge,
@@ -440,24 +441,6 @@ private fun DetailContent(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun DetailsData(
-    title: String,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    Column(
-        modifier = modifier.padding(vertical = 5.dp),
-        verticalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge
-        )
-        content()
     }
 }
 
