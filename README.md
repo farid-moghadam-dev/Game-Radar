@@ -1,11 +1,13 @@
 # Game Radar
 
-[![CI](https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
-[![Compose](https://img.shields.io/badge/Jetpack_Compose-2025.10-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
-[![Min SDK](https://img.shields.io/badge/minSdk-24-3DDC84?logo=android&logoColor=white)](https://developer.android.com/tools/releases/platforms)
-[![Target SDK](https://img.shields.io/badge/targetSdk-35-3DDC84?logo=android&logoColor=white)](https://developer.android.com/tools/releases/platforms)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<p align="center">
+  <a href="https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml"><img src="https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin" /></a>
+  <a href="https://developer.android.com/jetpack/compose"><img src="https://img.shields.io/badge/Jetpack_Compose-2025.10-4285F4?logo=jetpackcompose&logoColor=white" alt="Compose" /></a>
+  <a href="https://developer.android.com/tools/releases/platforms"><img src="https://img.shields.io/badge/minSdk-24-3DDC84?logo=android&logoColor=white" alt="Min SDK" /></a>
+  <a href="https://developer.android.com/tools/releases/platforms"><img src="https://img.shields.io/badge/targetSdk-35-3DDC84?logo=android&logoColor=white" alt="Target SDK" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT" /></a>
+</p>
 
 A modern Android app for discovering video games, powered by the [RAWG Video Games Database](https://rawg.io/apidocs). Browse a paginated catalog of games, open rich detail pages with ESRB ratings, Metacritic scores, platforms, stores and descriptions, and drill into curated lists of **Platforms**, **Publishers**, **Developers**, **Genres**, and **Stores** to see all the games each one is associated with.
 
@@ -95,6 +97,19 @@ com.faridev.gameradar
         ├── entity/detail/      // Entity details + games-by-entity
         └── NavRoutes.kt        // Type-safe nav graph
 ```
+
+### Design patterns
+
+| Pattern | Where it lives |
+|---|---|
+| **Clean Architecture** | Strict presentation → domain ← data boundary; domain has no Android/framework dependencies |
+| **MVVM** | `ViewModel`s expose `UiState<T>` / `PagingData<T>` for reactive Compose UI |
+| **Repository** | `GameRepository` interface in domain, `GameRepositoryImpl` wraps the Ktor API |
+| **Use Cases** | Single-responsibility suspend operators per action (e.g. `FetchGameDetailsUseCase`) |
+| **Dependency Injection** | Koin modules wire api, repository, use cases, and view models |
+| **Sealed State** | `UiState<T>` (`Loading / Success / Error`) and typed `AppError` for exhaustive `when` branches |
+| **Single Activity** | Compose Navigation with type-safe `@Serializable` routes for every screen |
+| **Polymorphic Feature** | One `GameEntityType` enum drives five catalog endpoints through one shared stack |
 
 ---
 
