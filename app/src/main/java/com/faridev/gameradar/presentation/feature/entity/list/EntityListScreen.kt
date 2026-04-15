@@ -32,6 +32,7 @@ import com.faridev.gameradar.domain.model.GameEntity
 import com.faridev.gameradar.domain.model.GameEntityType
 import com.faridev.gameradar.presentation.common.components.AnimatedTouchBox
 import com.faridev.gameradar.presentation.common.components.ErrorItem
+import com.faridev.gameradar.presentation.common.components.FullWidthLoader
 import com.faridev.gameradar.presentation.common.components.ImageWithOverlay
 import org.koin.androidx.compose.koinViewModel
 
@@ -95,20 +96,6 @@ private fun EntityList(
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun FullWidthLoader(small: Boolean = false) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            modifier = if (small) Modifier.size(24.dp) else Modifier
-        )
     }
 }
 

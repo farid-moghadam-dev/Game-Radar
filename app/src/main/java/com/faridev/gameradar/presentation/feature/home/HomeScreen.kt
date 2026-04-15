@@ -1,48 +1,23 @@
 package com.faridev.gameradar.presentation.feature.home
 
-import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import coil3.compose.AsyncImage
-import coil3.request.CachePolicy
-import coil3.request.ImageRequest
-import coil3.request.bitmapConfig
-import coil3.request.crossfade
-import coil3.request.placeholder
 import com.faridev.gameradar.R
 import com.faridev.gameradar.domain.model.GameResult
-import com.faridev.gameradar.presentation.common.components.AnimatedTouchBox
+import com.faridev.gameradar.presentation.common.components.ErrorItem
+import com.faridev.gameradar.presentation.common.components.FullWidthLoader
 import com.faridev.gameradar.presentation.common.components.GamesItemCard
 import com.faridev.gameradar.presentation.common.components.ImageCarousel
 import org.koin.androidx.compose.koinViewModel
@@ -56,7 +31,7 @@ fun HomeScreen(
 
     Box(Modifier.fillMaxSize()) {
         GamesListScreen(
-            gamesLazyPagingItems = gamesLazyPagingItems,
+            items = gamesLazyPagingItems,
             onNavigateToDetail = onNavigateToDetail
         )
     }
@@ -64,7 +39,7 @@ fun HomeScreen(
 
 @Composable
 private fun GamesListScreen(
-    gamesLazyPagingItems: LazyPagingItems<GameResult>,
+    items: LazyPagingItems<GameResult>,
     onNavigateToDetail: (Int) -> Unit
 ) {
     LazyVerticalGrid(
@@ -86,10 +61,10 @@ private fun GamesListScreen(
             )
         }
         items(
-            count = gamesLazyPagingItems.itemCount,
-            key = { index -> gamesLazyPagingItems[index]?.id ?: index }
+            count = items.itemCount,
+            key = { index -> items[index]?.id ?: index }
         ) { index ->
-            val game = gamesLazyPagingItems[index]
+            val game = items[index]
             game?.let {
                 GamesItemCard(
                     modifier = Modifier.padding(5.dp),
@@ -99,87 +74,31 @@ private fun GamesListScreen(
             }
         }
 
-        // Handle loading states
-        gamesLazyPagingItems.apply {
-            when {
-                // Initial loading
-                loadState.refresh is LoadState.Loading -> {
-                    item(span = { GridItemSpan(2) }) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
-                    }
-                }
+        when {
+            // Initial loading
+            items.loadState.refresh is LoadState.Loading -> item { FullWidthLoader() }
+            // Loading more items
+            items.loadState.append is LoadState.Loading -> item { FullWidthLoader(small = true) }
 
-                // Loading more items
-                loadState.append is LoadState.Loading -> {
-                    item(span = { GridItemSpan(2) }) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                        }
-                    }
-                }
-
-                // Error states
-                loadState.refresh is LoadState.Error -> {
-                    val error = gamesLazyPagingItems.loadState.refresh as LoadState.Error
-                    item(span = { GridItemSpan(2) }) {
-                        ErrorItem(
-                            message = error.error.localizedMessage ?: "Unknown error occurred",
-                            onRetry = { gamesLazyPagingItems.retry() }
-                        )
-                    }
-                }
-
-                loadState.append is LoadState.Error -> {
-                    val error = gamesLazyPagingItems.loadState.append as LoadState.Error
-                    item(span = { GridItemSpan(2) }) {
-                        ErrorItem(
-                            message = error.error.localizedMessage ?: "Error loading more items",
-                            onRetry = { gamesLazyPagingItems.retry() }
-                        )
-                    }
+            // Error states
+            items.loadState.refresh is LoadState.Error -> {
+                val error = items.loadState.refresh as LoadState.Error
+                item(span = { GridItemSpan(2) }) {
+                    ErrorItem(
+                        message = error.error.localizedMessage ?: "Unknown error occurred",
+                        onRetry = { items.retry() }
+                    )
                 }
             }
-        }
-    }
-}
 
-@Composable
-private fun ErrorItem(
-    message: String,
-    onRetry: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = onRetry) {
-                Text("Retry", style = MaterialTheme.typography.headlineSmall)
+            items.loadState.append is LoadState.Error -> {
+                val error = items.loadState.append as LoadState.Error
+                item(span = { GridItemSpan(2) }) {
+                    ErrorItem(
+                        message = error.error.localizedMessage ?: "Error loading more items",
+                        onRetry = { items.retry() }
+                    )
+                }
             }
         }
     }

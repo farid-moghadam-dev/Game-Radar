@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -33,6 +32,7 @@ import com.faridev.gameradar.domain.model.GameEntityType
 import com.faridev.gameradar.domain.model.GameResult
 import com.faridev.gameradar.presentation.common.components.ErrorItem
 import com.faridev.gameradar.presentation.common.components.ExpandableText
+import com.faridev.gameradar.presentation.common.components.FullWidthLoader
 import com.faridev.gameradar.presentation.common.components.GamesItemCard
 import com.faridev.gameradar.presentation.common.components.ImageWithOverlay
 import com.faridev.gameradar.presentation.common.state.UiState
@@ -130,9 +130,9 @@ private fun EntityDetailContent(
 
         when {
             games.loadState.refresh is LoadState.Loading ->
-                item(span = { GridItemSpan(2) }) { CenteredLoader() }
+                item(span = { GridItemSpan(2) }) { FullWidthLoader() }
             games.loadState.append is LoadState.Loading ->
-                item(span = { GridItemSpan(2) }) { CenteredLoader(small = true) }
+                item(span = { GridItemSpan(2) }) { FullWidthLoader(small = true) }
             games.loadState.refresh is LoadState.Error -> {
                 val e = games.loadState.refresh as LoadState.Error
                 item(span = { GridItemSpan(2) }) {
@@ -188,16 +188,3 @@ private fun EntityHeader(details: GameEntityDetails) {
     }
 }
 
-@Composable
-private fun CenteredLoader(small: Boolean = false) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            modifier = if (small) Modifier.size(24.dp) else Modifier
-        )
-    }
-}
