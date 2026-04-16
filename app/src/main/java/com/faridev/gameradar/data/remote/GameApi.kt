@@ -9,23 +9,24 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import io.ktor.client.statement.HttpResponse
 
 class GameApi(private val client: HttpClient) {
 
-    suspend fun fetchGamesList(page: Int, pageSize: Int): GamesListResDto =
+    suspend fun fetchGamesList(page: Int, pageSize: Int): HttpResponse =
         client.get("games") {
             parameter("page", page)
             parameter("page_size", pageSize)
-        }.body()
+        }
 
-    suspend fun fetchGameDetails(gameId: Int): GameDetailsResDto =
+    suspend fun fetchGameDetails(gameId: Int): HttpResponse =
         client.get("games/$gameId").body()
 
     suspend fun fetchEntityList(
         type: GameEntityType,
         page: Int,
         pageSize: Int,
-    ): GameEntityListResDto =
+    ): HttpResponse =
         client.get(type.apiPath) {
             parameter("page", page)
             parameter("page_size", pageSize)
@@ -34,7 +35,7 @@ class GameApi(private val client: HttpClient) {
     suspend fun fetchEntityDetails(
         type: GameEntityType,
         entityId: Int,
-    ): GameEntityDetailsResDto =
+    ): HttpResponse =
         client.get("${type.apiPath}/$entityId").body()
 
     suspend fun fetchGamesByEntity(
@@ -42,7 +43,7 @@ class GameApi(private val client: HttpClient) {
         entityId: Int,
         page: Int,
         pageSize: Int,
-    ): GamesListResDto =
+    ): HttpResponse =
         client.get("games") {
             parameter(type.gamesFilterParam, entityId)
             parameter("page", page)

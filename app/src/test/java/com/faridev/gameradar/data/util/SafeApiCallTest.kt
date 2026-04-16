@@ -4,6 +4,7 @@ import com.faridev.gameradar.domain.model.AppError
 import com.faridev.gameradar.presentation.common.state.UiState
 import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.url
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerializationException
 import org.junit.Assert.assertEquals
