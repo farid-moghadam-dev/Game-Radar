@@ -5,11 +5,13 @@ import androidx.paging.PagingState
 import com.faridev.gameradar.domain.model.GameEntity
 import com.faridev.gameradar.domain.model.GameEntityList
 import com.faridev.gameradar.presentation.common.state.UiState
+import kotlin.coroutines.cancellation.CancellationException
 
 class GameEntityPagingSource(
     private val entityListApiCall: suspend (page: Int, pageSize: Int) -> UiState<GameEntityList>,
 ) : PagingSource<Int, GameEntity>() {
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GameEntity> = try {
         val page = params.key ?: 1
         val pageSize = params.loadSize
@@ -26,12 +28,15 @@ class GameEntityPagingSource(
                 )
             }
         }
+    } catch (e: CancellationException) {
+        throw e
     } catch (exception: Exception) {
         LoadResult.Error(exception)
     }
 
-    override fun getRefreshKey(state: PagingState<Int, GameEntity>): Int? = state.anchorPosition?.let { anchorPosition ->
-        state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-            ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
-    }
+    override fun getRefreshKey(state: PagingState<Int, GameEntity>): Int? =
+        state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
 }

@@ -5,18 +5,24 @@ import androidx.paging.PagingState
 import com.faridev.gameradar.domain.model.GameResult
 import com.faridev.gameradar.domain.model.GamesList
 import com.faridev.gameradar.presentation.common.state.UiState
+import kotlin.coroutines.cancellation.CancellationException
 
 class GamesListPagingSource(
     private val gamesListApiCall: suspend (page: Int, pageSize: Int) -> UiState<GamesList>,
 ) : PagingSource<Int, GameResult>() {
 
+    @Suppress("TooGenericExceptionCaught")
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GameResult> = try {
         val page = params.key ?: 1
         val pageSize = params.loadSize
+
         val responseUiState = gamesListApiCall(page, pageSize)
+
         when (responseUiState) {
             is UiState.Error -> LoadResult.Error(Exception(responseUiState.message))
+
             UiState.Loading -> LoadResult.Invalid()
+
             is UiState.Success<GamesList> -> {
                 val responseData = responseUiState.data
                 LoadResult.Page(
@@ -26,12 +32,15 @@ class GamesListPagingSource(
                 )
             }
         }
-    } catch (exception: Exception) {
-        LoadResult.Error(exception)
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: Exception) {
+        LoadResult.Error(e)
     }
 
-    override fun getRefreshKey(state: PagingState<Int, GameResult>): Int? = state.anchorPosition?.let { anchorPosition ->
-        state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-            ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
-    }
+    override fun getRefreshKey(state: PagingState<Int, GameResult>): Int? =
+        state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
 }

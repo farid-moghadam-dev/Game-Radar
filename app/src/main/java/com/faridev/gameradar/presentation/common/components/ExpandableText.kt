@@ -76,7 +76,14 @@ fun ExpandableText(
             style = style,
         )
 
-        Card(modifier = Modifier.padding(top = 4.dp), colors = CardDefaults.cardColors(containerColor = readMoreCardColor, contentColor = readMoreTextColor), shape = RoundedCornerShape(4.dp)) {
+        Card(
+            modifier = Modifier.padding(top = 4.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = readMoreCardColor,
+                contentColor = readMoreTextColor,
+            ),
+            shape = RoundedCornerShape(4.dp),
+        ) {
             Text(
                 text = if (isExpanded) "Show less" else "Read more",
                 color = color,

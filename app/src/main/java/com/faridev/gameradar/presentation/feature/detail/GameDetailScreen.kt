@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -55,8 +54,10 @@ import com.faridev.gameradar.core.util.iconResId
 import com.faridev.gameradar.core.util.noRippleClickable
 import com.faridev.gameradar.core.util.showShortToast
 import com.faridev.gameradar.domain.model.GameDetails
+import com.faridev.gameradar.domain.model.ParentPlatform
 import com.faridev.gameradar.domain.model.ParentPlatformInfo
 import com.faridev.gameradar.domain.model.Store
+import com.faridev.gameradar.domain.model.StoreInfo
 import com.faridev.gameradar.presentation.common.components.AnimatedTouchBox
 import com.faridev.gameradar.presentation.common.components.ClickableWordsText
 import com.faridev.gameradar.presentation.common.components.DetailSection
@@ -72,6 +73,7 @@ import com.faridev.gameradar.presentation.common.theme.LowRateColor
 import com.faridev.gameradar.presentation.common.theme.MediumRateColor
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import kotlin.collections.mapNotNull
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -153,160 +155,190 @@ private fun DetailTopBar(
 }
 
 @Composable
-private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails) {
+private fun TopBarDetail(
+    modifier: Modifier = Modifier,
+    gameDetails: GameDetails,
+) {
     val context = LocalContext.current
-    Column(modifier = modifier.fillMaxSize()) {
-        Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
-            Card(
-                colors = CardDefaults.cardColors(containerColor = Color.White),
-                shape = RoundedCornerShape(4.dp),
-            ) {
-                gameDetails.released?.let {
-                    Text(
-                        modifier = Modifier.padding(3.dp),
-                        text = gameDetails.released,
-                        color = Color.Black,
-                        style = MaterialTheme.typography.labelMedium,
-                        fontFamily = Fonts.ArialRounded,
-                    )
-                }
-            }
 
-            gameDetails.name?.let {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = gameDetails.name,
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = Color.White,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
-        }
+    Column(modifier = modifier.fillMaxSize()) {
+        HeaderSection(gameDetails)
 
         Spacer(Modifier.height(15.dp))
 
-        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.SpaceBetween) {
-            Text(
-                text = "Average Playtime: ${gameDetails.playtime ?: "N/A"}",
-                color = Color.White,
-                style = MaterialTheme.typography.labelLarge,
-                fontFamily = Fonts.ArialRounded,
-            )
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.SpaceBetween,
+        ) {
+            PlaytimeText(gameDetails.playtime)
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Absolute.SpaceBetween,
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Card(
-                    modifier = Modifier.noRippleClickable {
-                        gameDetails.metacriticUrl?.checkUrlValidation(
-                            onValidUrl = { validUrl ->
-                                openUrlInBrowser(context = context, url = validUrl)
-                            },
-                            onUrlValidationError = {
-                                context.showShortToast("Metacritic domain is not valid")
-                            },
-                        )
-                    },
-                    colors = CardDefaults.cardColors(containerColor = Color.White),
-                    shape = RoundedCornerShape(4.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.padding(3.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(5.dp),
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.ic_meta),
-                            contentDescription = "Metacritic Rate",
-                            contentScale = ContentScale.Crop,
-                        )
-
-                        Text(
-                            text = "${gameDetails.metacritic ?: "N/A"}",
-                            color = Color.Black,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontSize = 14.sp,
-                        )
-                    }
-                }
-
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = getColorFromRate(
-                            gameDetails.rating ?: 0.0,
-                            gameDetails.ratingTop?.toDouble() ?: 0.0,
-                        ),
-                    ),
-                    shape = RoundedCornerShape(4.dp),
-                ) {
-                    Row(
-                        modifier = Modifier.height(IntrinsicSize.Max),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            modifier = Modifier.padding(horizontal = 3.dp),
-                            painter = painterResource(R.drawable.ic_rate),
-                            contentDescription = "Rate icon",
-                            tint = Color.White,
-                        )
-
-                        VerticalDivider(
-                            Modifier
-                                .fillMaxHeight()
-                                .padding(vertical = 3.dp),
-                            thickness = (1.5).dp,
-                            color = Color.White,
-                        )
-
-                        Text(
-                            modifier = Modifier.padding(horizontal = 5.dp),
-                            text = "${gameDetails.rating ?: "N/A"}/${gameDetails.ratingTop ?: "N/A"}",
-                            color = Color.White,
-                            fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold,
-                        )
-                    }
-                }
+                MetacriticCard(gameDetails, context)
+                RatingCard(gameDetails)
             }
 
-            gameDetails.website?.let { website ->
-                Text(
-                    modifier = Modifier.noRippleClickable {
-                        website.checkUrlValidation(
-                            onValidUrl = { validUrl ->
-                                openUrlInBrowser(context = context, url = validUrl)
-                            },
-                            onUrlValidationError = {
-                                context.showShortToast("Store domain is not valid")
-                            },
-                        )
-                        openUrlInBrowser(context = context, gameDetails.website)
-                    },
-                    text = gameDetails.website,
-                    color = LightHyperlinkColor,
-                    style = MaterialTheme.typography.labelMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    textDecoration = TextDecoration.Underline,
-                )
+            gameDetails.website?.let {
+                WebsiteLink(it, context)
             }
         }
 
         Spacer(Modifier.height(10.dp))
 
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
-            contentPadding = PaddingValues(horizontal = 3.dp),
-            horizontalArrangement = Arrangement.Center,
+        PlatformsRow(gameDetails.parentPlatforms)
+    }
+}
+
+@Composable
+private fun HeaderSection(gameDetails: GameDetails) {
+    Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+        Card(
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            shape = RoundedCornerShape(4.dp),
         ) {
-            items(gameDetails.parentPlatforms.mapNotNull { it.platform }) { parentPlatform ->
-                PlatformIcon(parentPlatform)
+            gameDetails.released?.let {
+                Text(
+                    modifier = Modifier.padding(3.dp),
+                    text = it,
+                    color = Color.Black,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontFamily = Fonts.ArialRounded,
+                )
             }
+        }
+
+        gameDetails.name?.let {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = it,
+                style = MaterialTheme.typography.headlineMedium,
+                color = Color.White,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlaytimeText(playtime: Int?) {
+    Text(
+        text = "Average Playtime: ${playtime ?: "N/A"}",
+        color = Color.White,
+        style = MaterialTheme.typography.labelLarge,
+        fontFamily = Fonts.ArialRounded,
+    )
+}
+
+@Composable
+private fun MetacriticCard(gameDetails: GameDetails, context: Context) {
+    Card(
+        modifier = Modifier.noRippleClickable {
+            gameDetails.metacriticUrl?.checkUrlValidation(
+                onValidUrl = { openUrlInBrowser(context, it) },
+                onUrlValidationError = {
+                    context.showShortToast("Metacritic domain is not valid")
+                },
+            )
+        },
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        shape = RoundedCornerShape(4.dp),
+    ) {
+        Row(
+            modifier = Modifier.padding(3.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_meta),
+                contentDescription = "Metacritic Rate",
+            )
+
+            Text(
+                text = "${gameDetails.metacritic ?: "N/A"}",
+                color = Color.Black,
+                style = MaterialTheme.typography.titleMedium,
+                fontSize = 14.sp,
+            )
+        }
+    }
+}
+
+@Composable
+private fun RatingCard(gameDetails: GameDetails) {
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = getColorFromRate(
+                gameDetails.rating ?: 0.0,
+                gameDetails.ratingTop?.toDouble() ?: 0.0,
+            ),
+        ),
+        shape = RoundedCornerShape(4.dp),
+    ) {
+        Row(
+            modifier = Modifier.height(IntrinsicSize.Max),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                modifier = Modifier.padding(horizontal = 3.dp),
+                painter = painterResource(R.drawable.ic_rate),
+                contentDescription = null,
+                tint = Color.White,
+            )
+
+            VerticalDivider(
+                Modifier
+                    .fillMaxHeight()
+                    .padding(vertical = 3.dp),
+                thickness = 1.5.dp,
+                color = Color.White,
+            )
+
+            Text(
+                modifier = Modifier.padding(horizontal = 5.dp),
+                text = "${gameDetails.rating ?: "N/A"}/${gameDetails.ratingTop ?: "N/A"}",
+                color = Color.White,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    }
+}
+
+@Composable
+private fun WebsiteLink(website: String, context: Context) {
+    Text(
+        modifier = Modifier.noRippleClickable {
+            website.checkUrlValidation(
+                onValidUrl = { openUrlInBrowser(context, it) },
+                onUrlValidationError = {
+                    context.showShortToast("Store domain is not valid")
+                },
+            )
+        },
+        text = website,
+        color = LightHyperlinkColor,
+        style = MaterialTheme.typography.labelMedium,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        textDecoration = TextDecoration.Underline,
+    )
+}
+
+@Composable
+private fun PlatformsRow(platforms: List<ParentPlatform>) {
+    val items = platforms.mapNotNull { it.platform }
+
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = 3.dp),
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        items(items) { platform ->
+            PlatformIcon(platform)
         }
     }
 }
@@ -317,127 +349,143 @@ private fun DetailContent(
     gameDetails: GameDetails,
 ) {
     val context = LocalContext.current
+
     Column(modifier = modifier) {
-        gameDetails.descriptionRaw?.let {
-            DetailSection("About") {
-                ExpandableText(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = gameDetails.descriptionRaw,
-                    style = MaterialTheme.typography.labelLarge,
-                    textAlign = TextAlign.Justify,
-                    maxLines = 5,
-                    lineHeight = 18.sp,
-                )
-            }
+        AboutSection(gameDetails.descriptionRaw)
+
+        MetaSection(gameDetails)
+
+        SimpleTextSection("Genres", gameDetails.genres.map { it.name })
+        SimpleTextSection("Publisher", gameDetails.publishers.map { it.name })
+        SimpleTextSection("Developer", gameDetails.developers.map { it.name })
+
+        ClickableSection(
+            "Platforms",
+            gameDetails.platforms.map { it.platform?.name },
+        ) {
+            context.showShortToast("Platform : $it clicked")
         }
 
-        Row(Modifier.fillMaxWidth()) {
-            gameDetails.released?.let {
-                DetailSection(modifier = Modifier.weight(1f), title = "Release Date") {
-                    Text(
-                        text = gameDetails.released,
-                        style = MaterialTheme.typography.labelLarge,
-                        lineHeight = 18.sp,
-                    )
-                }
-            }
+        StoresSection(gameDetails.stores)
 
-            DetailSection(modifier = Modifier.weight(1f), title = "Age Rating") {
-                ShowDefaultTextTooltip(
-                    tooltipText = gameDetails.esrbRating.description,
-                ) { tooltipState, scope ->
-                    Row(
-                        modifier = Modifier.clickable {
-                            scope.launch { tooltipState.show() }
-                        },
-                        horizontalArrangement = Arrangement.spacedBy(5.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Image(
-                            modifier = Modifier
-                                .height(25.dp)
-                                .aspectRatio(0.75f),
-                            painter = painterResource(gameDetails.esrbRating.iconResId),
-                            contentScale = ContentScale.Fit,
-                            contentDescription = "ESRB Rating",
-                        )
-
-                        Text(
-                            text = gameDetails.esrbRating.title,
-                            style = MaterialTheme.typography.labelLarge,
-                            lineHeight = 18.sp,
-                        )
-                    }
-                }
-            }
+        ClickableSection(
+            "Tags",
+            gameDetails.tags.map { it.name },
+        ) {
+            context.showShortToast("Tag : $it clicked")
         }
+    }
+}
 
-        if (gameDetails.genres.isNotEmpty()) {
-            DetailSection("Genres") {
+@Composable
+private fun AboutSection(description: String?) {
+    description?.let {
+        DetailSection("About") {
+            ExpandableText(
+                modifier = Modifier.fillMaxWidth(),
+                text = it,
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Justify,
+                maxLines = 5,
+                lineHeight = 18.sp,
+            )
+        }
+    }
+}
+
+@Composable
+private fun MetaSection(gameDetails: GameDetails) {
+    Row(Modifier.fillMaxWidth()) {
+        gameDetails.released?.let {
+            DetailSection(modifier = Modifier.weight(1f), title = "Release Date") {
                 Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = gameDetails.genres.mapNotNull { it.name }.joinToString(", "),
+                    text = it,
                     style = MaterialTheme.typography.labelLarge,
                     lineHeight = 18.sp,
                 )
             }
         }
 
-        if (gameDetails.publishers.isNotEmpty()) {
-            DetailSection("Publisher") {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = gameDetails.publishers.mapNotNull { it.name }.joinToString(", "),
-                    style = MaterialTheme.typography.labelLarge,
-                    lineHeight = 18.sp,
-                )
-            }
+        DetailSection(modifier = Modifier.weight(1f), title = "Age Rating") {
+            AgeRatingContent(gameDetails)
         }
+    }
+}
 
-        if (gameDetails.developers.isNotEmpty()) {
-            DetailSection("Developer") {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = gameDetails.developers.mapNotNull { it.name }.joinToString(", "),
-                    style = MaterialTheme.typography.labelLarge,
-                    lineHeight = 18.sp,
-                )
-            }
+@Composable
+private fun AgeRatingContent(gameDetails: GameDetails) {
+    ShowDefaultTextTooltip(
+        tooltipText = gameDetails.esrbRating.description,
+    ) { tooltipState, scope ->
+        Row(
+            modifier = Modifier.clickable {
+                scope.launch { tooltipState.show() }
+            },
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                modifier = Modifier
+                    .height(25.dp)
+                    .aspectRatio(0.75f),
+                painter = painterResource(gameDetails.esrbRating.iconResId),
+                contentScale = ContentScale.Fit,
+                contentDescription = "ESRB Rating",
+            )
+
+            Text(
+                text = gameDetails.esrbRating.title,
+                style = MaterialTheme.typography.labelLarge,
+                lineHeight = 18.sp,
+            )
         }
+    }
+}
 
-        if (gameDetails.platforms.isNotEmpty()) {
-            DetailSection("Platforms") {
-                ClickableWordsText(
-                    text = gameDetails.platforms.mapNotNull { it.platform?.name }
-                        .joinToString(", "),
-                    style = MaterialTheme.typography.labelLarge,
-                    lineHeight = 18.sp,
-                ) { clickedWord ->
-                    // TODO show clicked platform games in future
-                    context.showShortToast("Platform : $clickedWord clicked")
-                }
-            }
+@Composable
+private fun SimpleTextSection(title: String, items: List<String?>) {
+    val text = items.mapNotNull { it }.joinToString(", ")
+    if (text.isNotEmpty()) {
+        DetailSection(title) {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                text = text,
+                style = MaterialTheme.typography.labelLarge,
+                lineHeight = 18.sp,
+            )
         }
+    }
+}
 
-        if (gameDetails.stores.isNotEmpty()) {
-            DetailSection("Stores") {
-                LazyRow {
-                    items(gameDetails.stores.mapNotNull { it.store }) { store ->
-                        StoreItem(store)
-                    }
-                }
-            }
+@Composable
+private fun ClickableSection(
+    title: String,
+    items: List<String?>,
+    onClick: (String) -> Unit,
+) {
+    val text = items.mapNotNull { it }.joinToString(", ")
+
+    if (text.isNotEmpty()) {
+        DetailSection(title) {
+            ClickableWordsText(
+                text = text,
+                style = MaterialTheme.typography.labelLarge,
+                lineHeight = 18.sp,
+                onWordClick = onClick,
+            )
         }
+    }
+}
 
-        if (gameDetails.tags.isNotEmpty()) {
-            DetailSection("Tags") {
-                ClickableWordsText(
-                    text = gameDetails.tags.mapNotNull { it.name }.joinToString(", "),
-                    style = MaterialTheme.typography.labelLarge,
-                    lineHeight = 18.sp,
-                ) { clickedWord ->
-                    // TODO show clicked games with clicked tag in future
-                    context.showShortToast("Tag : $clickedWord clicked")
+@Composable
+private fun StoresSection(stores: List<StoreInfo>) {
+    val validStores = stores.mapNotNull { it.store }
+
+    if (validStores.isNotEmpty()) {
+        DetailSection("Stores") {
+            LazyRow {
+                items(validStores) { store ->
+                    StoreItem(store)
                 }
             }
         }

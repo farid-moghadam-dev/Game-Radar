@@ -46,8 +46,8 @@ fun ClickableWordsText(
                         style = SpanStyle(color = linkTextColor),
                         pressedStyle = SpanStyle(color = linkTextColor, textDecoration = TextDecoration.Underline),
                     ),
-                    linkInteractionListener = { it ->
-                        onWordClick((it as LinkAnnotation.Clickable).tag)
+                    linkInteractionListener = { linkAnnotation ->
+                        onWordClick((linkAnnotation as LinkAnnotation.Clickable).tag)
                     },
                 )
                 withLink(clickableWord) { append(word) }

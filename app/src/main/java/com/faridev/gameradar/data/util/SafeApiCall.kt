@@ -18,12 +18,13 @@ import kotlin.coroutines.cancellation.CancellationException
  * [AppError] wrapped in [UiState.Error]. [CancellationException] is re-thrown so
  * coroutines can be cancelled cooperatively.
  */
+@Suppress("TooGenericExceptionCaught")
 suspend fun <T> safeApiCall(apiCall: suspend () -> T): UiState<T> =
     try {
         UiState.Success(apiCall())
     } catch (e: CancellationException) {
         throw e
-    } catch (e: Throwable) {
+    } catch (e: Exception) {
         UiState.Error(e.toAppError())
     }
 

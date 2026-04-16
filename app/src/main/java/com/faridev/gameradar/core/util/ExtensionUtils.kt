@@ -2,12 +2,13 @@ package com.faridev.gameradar.core.util
 
 import android.content.Context
 import android.util.Patterns
+import timber.log.Timber
 import java.io.IOException
 
 fun Context.loadJSONFromAsset(fileName: String): String? = try {
     assets.open(fileName).bufferedReader().use { it.readText() }
 } catch (ex: IOException) {
-    ex.printStackTrace()
+    Timber.e(ex)
     null
 }
 

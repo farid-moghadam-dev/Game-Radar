@@ -3,6 +3,7 @@ package com.faridev.gameradar.domain.model
 import androidx.annotation.DrawableRes
 import com.faridev.gameradar.R
 
+@Suppress("MaxLineLength")
 enum class EsrbRating(
     val slug: String,
     val title: String,
@@ -43,7 +44,12 @@ enum class EsrbRating(
         slug = "rating-pending",
         title = "Rating Pending",
         iconResId = R.drawable.esrb_rating_pending,
-        description = "Not yet assigned a final ESRB rating. Appears only in advertising, marketing and promotional materials related to a physical (e.g., boxed) video game that is expected to carry an ESRB rating, and should be replaced by a game's rating once it has been assigned.",
+        description = """
+    Not yet assigned a final ESRB rating. Appears only in advertising,
+    marketing and promotional materials related to a physical (e.g., boxed)
+    video game that is expected to carry an ESRB rating, and should be
+    replaced by a game's rating once it has been assigned.
+        """.trimIndent(),
     ),
     ;
 

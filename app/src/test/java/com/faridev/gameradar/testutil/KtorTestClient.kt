@@ -11,7 +11,7 @@ import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-private const val BASE_URL = "https://api.rawg.io/api/"
+private const val BASEURL = "https://api.rawg.io/api/"
 
 /**
  * Build a test [HttpClient] configured like the production one but driven by a
@@ -38,7 +38,7 @@ fun testHttpClient(
         }
         defaultRequest {
             url {
-                takeFrom(BASE_URL)
+                takeFrom(BASEURL)
                 parameters.append("key", "test")
             }
         }

@@ -1,9 +1,5 @@
 package com.faridev.gameradar.data.remote
 
-import com.faridev.gameradar.data.model.GameDetailsResDto
-import com.faridev.gameradar.data.model.GameEntityDetailsResDto
-import com.faridev.gameradar.data.model.GameEntityListResDto
-import com.faridev.gameradar.data.model.GamesListResDto
 import com.faridev.gameradar.domain.model.GameEntityType
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

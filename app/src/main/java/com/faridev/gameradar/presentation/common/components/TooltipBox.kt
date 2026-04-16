@@ -51,7 +51,10 @@ fun ShowTextTooltip(
     val scope = rememberCoroutineScope()
 
     TooltipBox(
-        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(spacingBetweenTooltipAndAnchor = 4.dp, positioning = TooltipAnchorPosition.Above),
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(
+            spacingBetweenTooltipAndAnchor = 4.dp,
+            positioning = TooltipAnchorPosition.Above,
+        ),
         tooltip = {
             RichTooltip(
                 colors = TooltipDefaults.richTooltipColors(
