@@ -12,7 +12,7 @@ data class GameEntityListResDto(
     @SerialName("count") val count: Int = 0,
     @SerialName("next") val next: String? = null,
     @SerialName("previous") val previous: String? = null,
-    @SerialName("results") val results: List<Result> = emptyList()
+    @SerialName("results") val results: List<Result> = emptyList(),
 ) {
     @Serializable
     @JsonIgnoreUnknownKeys
@@ -22,14 +22,14 @@ data class GameEntityListResDto(
         @SerialName("slug") val slug: String? = null,
         @SerialName("games_count") val gamesCount: Int = 0,
         @SerialName("image_background") val imageBackground: String? = null,
-        @SerialName("games") val games: List<Game> = emptyList()
+        @SerialName("games") val games: List<Game> = emptyList(),
     ) {
         @Serializable
         @JsonIgnoreUnknownKeys
         data class Game(
             @SerialName("id") val id: Int,
             @SerialName("name") val name: String,
-            @SerialName("slug") val slug: String? = null
+            @SerialName("slug") val slug: String? = null,
         )
     }
 }

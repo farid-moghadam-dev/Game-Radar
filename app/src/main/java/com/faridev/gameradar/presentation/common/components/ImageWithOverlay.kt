@@ -21,7 +21,7 @@ import com.faridev.gameradar.R
 fun ImageWithOverlay(
     modifier: Modifier = Modifier,
     imageUrl: String?,
-    overlayColor : Color = MaterialTheme.colorScheme.onSurface
+    overlayColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     Box(modifier = modifier) {
         AsyncImage(
@@ -36,12 +36,12 @@ fun ImageWithOverlay(
             placeholder = painterResource(R.drawable.gaming_banner_placeholder),
             error = painterResource(R.drawable.gaming_banner_placeholder),
             contentDescription = "Image With Overlay",
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
         Box(
             modifier = Modifier
                 .matchParentSize()
-                .background(overlayColor)
+                .background(overlayColor),
         )
     }
 }

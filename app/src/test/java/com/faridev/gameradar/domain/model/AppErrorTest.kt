@@ -9,7 +9,7 @@ class AppErrorTest {
     fun `NoConnection maps to offline message`() {
         assertEquals(
             "You're offline. Check your connection and try again.",
-            AppError.NoConnection.userMessage
+            AppError.NoConnection.userMessage,
         )
     }
 
@@ -22,7 +22,7 @@ class AppErrorTest {
     fun `Http 401 maps to unauthorized`() {
         assertEquals(
             "You're not authorized to make this request.",
-            AppError.Http(401).userMessage
+            AppError.Http(401).userMessage,
         )
     }
 
@@ -30,7 +30,7 @@ class AppErrorTest {
     fun `Http 404 maps to not found`() {
         assertEquals(
             "We couldn't find what you were looking for.",
-            AppError.Http(404).userMessage
+            AppError.Http(404).userMessage,
         )
     }
 
@@ -38,7 +38,7 @@ class AppErrorTest {
     fun `Http 5xx maps to server message`() {
         assertEquals(
             "The server is having trouble. Please try again shortly.",
-            AppError.Http(503).userMessage
+            AppError.Http(503).userMessage,
         )
     }
 

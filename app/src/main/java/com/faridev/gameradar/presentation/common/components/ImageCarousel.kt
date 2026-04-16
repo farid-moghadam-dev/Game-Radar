@@ -45,7 +45,7 @@ fun ImageCarousel(
     scaleAnimationEnabled: Boolean = true,
     showIndicators: Boolean = false,
     autoScrollEnabled: Boolean = true,
-    autoScrollDelayMillis: Long = 3000L
+    autoScrollDelayMillis: Long = 3000L,
 ) {
     if (imageResIds.isEmpty()) return
 
@@ -54,7 +54,7 @@ fun ImageCarousel(
 
     val pagerState = rememberPagerState(
         initialPage = startPage,
-        pageCount = { if (isInfinite) Int.MAX_VALUE else pageCount }
+        pageCount = { if (isInfinite) Int.MAX_VALUE else pageCount },
     )
 
     AutoScrollHandler(
@@ -62,7 +62,7 @@ fun ImageCarousel(
         pagerState = pagerState,
         delayMillis = autoScrollDelayMillis,
         isInfinite = isInfinite,
-        lastIndex = imageResIds.lastIndex
+        lastIndex = imageResIds.lastIndex,
     )
 
     Column(modifier.fillMaxWidth()) {
@@ -70,14 +70,16 @@ fun ImageCarousel(
             state = pagerState,
             modifier = Modifier.fillMaxWidth(),
             pageSpacing = 10.dp,
-            contentPadding = PaddingValues(horizontal = 20.dp)
+            contentPadding = PaddingValues(horizontal = 20.dp),
         ) { page ->
             val actualIndex = page % pageCount
             ImageCard(
                 imageRes = imageResIds[actualIndex],
                 scaleAnimationEnabled = scaleAnimationEnabled,
-                pageOffset = (pagerState.currentPage - page +
-                        pagerState.currentPageOffsetFraction).absoluteValue
+                pageOffset = (
+                    pagerState.currentPage - page +
+                        pagerState.currentPageOffsetFraction
+                    ).absoluteValue,
             )
         }
 
@@ -86,7 +88,7 @@ fun ImageCarousel(
             PageIndicators(
                 pageCount = pageCount,
                 currentPage = pagerState.currentPage % pageCount,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
         }
     }
@@ -98,17 +100,20 @@ private fun AutoScrollHandler(
     pagerState: PagerState,
     delayMillis: Long,
     isInfinite: Boolean,
-    lastIndex: Int
+    lastIndex: Int,
 ) {
     LaunchedEffect(enabled) {
         if (!enabled) return@LaunchedEffect
         while (true) {
             delay(delayMillis)
-            val nextPage = if (isInfinite || pagerState.currentPage < lastIndex)
-                pagerState.currentPage + 1 else 0
+            val nextPage = if (isInfinite || pagerState.currentPage < lastIndex) {
+                pagerState.currentPage + 1
+            } else {
+                0
+            }
             pagerState.animateScrollToPage(
                 page = nextPage,
-                animationSpec = tween(600)
+                animationSpec = tween(600),
             )
         }
     }
@@ -118,18 +123,20 @@ private fun AutoScrollHandler(
 private fun ImageCard(
     imageRes: Int,
     scaleAnimationEnabled: Boolean,
-    pageOffset: Float
+    pageOffset: Float,
 ) {
     val cardModifier = if (scaleAnimationEnabled) {
         Modifier.graphicsLayer {
             scaleY = lerp(0.85f, 1f, 1f - pageOffset.coerceIn(0f, 1f))
         }
-    } else Modifier
+    } else {
+        Modifier
+    }
 
     Card(
         modifier = cardModifier,
         shape = RoundedCornerShape(15.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
     ) {
         Image(
             modifier = Modifier
@@ -137,7 +144,7 @@ private fun ImageCard(
                 .fillMaxWidth(),
             painter = painterResource(imageRes),
             contentScale = ContentScale.Crop,
-            contentDescription = "Banner"
+            contentDescription = "Banner",
         )
     }
 }
@@ -146,11 +153,11 @@ private fun ImageCard(
 private fun PageIndicators(
     pageCount: Int,
     currentPage: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         repeat(pageCount) { index ->
             val isCurrentPage = index == currentPage
@@ -160,34 +167,35 @@ private fun PageIndicators(
                 targetValue = if (isCurrentPage) 20.dp else 8.dp,
                 animationSpec = tween(
                     durationMillis = 300,
-                    easing = FastOutSlowInEasing
+                    easing = FastOutSlowInEasing,
                 ),
-                label = "indicator_width"
+                label = "indicator_width",
             )
 
             // Animated color based on selection
             val animatedColor by animateColorAsState(
-                targetValue = if (isCurrentPage)
+                targetValue = if (isCurrentPage) {
                     MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                } else {
+                    MaterialTheme.colorScheme.primary.copy(alpha = 0.3f)
+                },
                 animationSpec = tween(
                     durationMillis = 300,
-                    easing = FastOutSlowInEasing
+                    easing = FastOutSlowInEasing,
                 ),
-                label = "indicator_color"
+                label = "indicator_color",
             )
 
             Box(
                 modifier = Modifier
                     .size(
                         width = animatedWidth,
-                        height = 8.dp
+                        height = 8.dp,
                     )
                     .background(
                         color = animatedColor,
-                        shape = CircleShape
-                    )
+                        shape = CircleShape,
+                    ),
             )
         }
     }

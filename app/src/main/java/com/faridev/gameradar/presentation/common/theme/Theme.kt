@@ -19,7 +19,7 @@ private val DarkColorScheme = darkColorScheme(
     secondaryContainer = DarkSecondaryColor,
     onSecondaryContainer = DarkOnSecondaryColor,
     surface = DarkSurfaceColor,
-    onSurface = DarkTransparentColor
+    onSurface = DarkTransparentColor,
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -31,7 +31,7 @@ private val LightColorScheme = lightColorScheme(
     secondaryContainer = LightSecondaryColor,
     onSecondaryContainer = LightOnSecondaryColor,
     surface = LightSurfaceColor,
-    onSurface = LightTransparentColor
+    onSurface = LightTransparentColor,
 )
 
 @Composable
@@ -39,7 +39,7 @@ fun GameRadarTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -54,6 +54,6 @@ fun GameRadarTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        content = content
+        content = content,
     )
 }

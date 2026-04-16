@@ -23,7 +23,7 @@ class GameRadarApp : Application() {
                 networkModule,
                 repositoryModule,
                 useCaseModule,
-                viewModelModule
+                viewModelModule,
             )
         }
 

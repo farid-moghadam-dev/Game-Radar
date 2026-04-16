@@ -4,18 +4,16 @@ import android.content.Context
 import android.util.Patterns
 import java.io.IOException
 
-fun Context.loadJSONFromAsset(fileName: String): String? {
-    return try {
-        assets.open(fileName).bufferedReader().use { it.readText() }
-    } catch (ex: IOException) {
-        ex.printStackTrace()
-        null
-    }
+fun Context.loadJSONFromAsset(fileName: String): String? = try {
+    assets.open(fileName).bufferedReader().use { it.readText() }
+} catch (ex: IOException) {
+    ex.printStackTrace()
+    null
 }
 
 fun String.checkUrlValidation(
-    onValidUrl: (validUrl : String) -> Unit,
-    onUrlValidationError: (() -> Unit)? = null
+    onValidUrl: (validUrl: String) -> Unit,
+    onUrlValidationError: (() -> Unit)? = null,
 ) {
     if (Patterns.WEB_URL.matcher(this).matches()) {
         val url = if (this.startsWith("http://") || this.startsWith("https://")) {
@@ -36,7 +34,7 @@ private val HtmlEntities = mapOf(
     "&gt;" to ">",
     "&quot;" to "\"",
     "&#39;" to "'",
-    "&nbsp;" to " "
+    "&nbsp;" to " ",
 )
 
 fun String.stripHtml(): String {

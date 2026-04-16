@@ -16,10 +16,10 @@ fun FullWidthLoader(small: Boolean = false) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator(
-            modifier = if (small) Modifier.size(24.dp) else Modifier
+            modifier = if (small) Modifier.size(24.dp) else Modifier,
         )
     }
 }

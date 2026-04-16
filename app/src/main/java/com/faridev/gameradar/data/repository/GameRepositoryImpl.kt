@@ -26,7 +26,7 @@ class GameRepositoryImpl(private val gameApi: GameApi) : GameRepository {
             config = PagingConfig(pageSize = 40),
             pagingSourceFactory = {
                 GamesListPagingSource { page, pageSize -> fetchGamesList(page, pageSize) }
-            }
+            },
         ).flow
 
     override suspend fun fetchGamesList(page: Int, pageSize: Int): UiState<GamesList> =
@@ -40,25 +40,25 @@ class GameRepositoryImpl(private val gameApi: GameApi) : GameRepository {
             config = PagingConfig(pageSize = 20),
             pagingSourceFactory = {
                 GameEntityPagingSource { page, pageSize -> fetchEntityList(type, page, pageSize) }
-            }
+            },
         ).flow
 
     override suspend fun fetchEntityList(
         type: GameEntityType,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): UiState<GameEntityList> =
         safeApiCall { gameApi.fetchEntityList(type, page, pageSize).toDomain() }
 
     override suspend fun fetchEntityDetails(
         type: GameEntityType,
-        entityId: Int
+        entityId: Int,
     ): UiState<GameEntityDetails> =
         safeApiCall { gameApi.fetchEntityDetails(type, entityId).toDomain() }
 
     override fun getGamesByEntityStream(
         type: GameEntityType,
-        entityId: Int
+        entityId: Int,
     ): Flow<PagingData<GameResult>> =
         Pager(
             config = PagingConfig(pageSize = 20),
@@ -68,6 +68,6 @@ class GameRepositoryImpl(private val gameApi: GameApi) : GameRepository {
                         gameApi.fetchGamesByEntity(type, entityId, page, pageSize).toDomain()
                     }
                 }
-            }
+            },
         ).flow
 }

@@ -46,8 +46,8 @@ fun ExpandableText(
     minLines: Int = 1,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
     style: TextStyle = LocalTextStyle.current,
-    readMoreCardColor : Color = MaterialTheme.colorScheme.secondaryContainer,
-    readMoreTextColor : Color = MaterialTheme.colorScheme.onSecondaryContainer,
+    readMoreCardColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    readMoreTextColor: Color = MaterialTheme.colorScheme.onSecondaryContainer,
 ) {
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -82,7 +82,7 @@ fun ExpandableText(
                 color = color,
                 style = style,
                 fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier.padding(3.dp)
+                modifier = Modifier.padding(3.dp),
             )
         }
     }

@@ -44,7 +44,7 @@ fun EntityDetailScreen(
     type: GameEntityType,
     entityId: Int,
     viewModel: EntityDetailViewModel = koinViewModel(),
-    onNavigateToGame: (gameId: Int) -> Unit
+    onNavigateToGame: (gameId: Int) -> Unit,
 ) {
     LaunchedEffect(type, entityId) { viewModel.load(type, entityId) }
 
@@ -57,7 +57,7 @@ fun EntityDetailScreen(
             is UiState.Success -> EntityDetailContent(
                 details = state.data,
                 games = games,
-                onNavigateToGame = onNavigateToGame
+                onNavigateToGame = onNavigateToGame,
             )
         }
     }
@@ -67,11 +67,11 @@ fun EntityDetailScreen(
 private fun EntityDetailContent(
     details: GameEntityDetails,
     games: LazyPagingItems<GameResult>,
-    onNavigateToGame: (Int) -> Unit
+    onNavigateToGame: (Int) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
-        columns = GridCells.Fixed(2)
+        columns = GridCells.Fixed(2),
     ) {
         item(span = { GridItemSpan(2) }) {
             EntityHeader(details = details)
@@ -81,7 +81,7 @@ private fun EntityDetailContent(
             item(span = { GridItemSpan(2) }) {
                 DetailSection(
                     modifier = Modifier.padding(horizontal = 8.dp),
-                    title = "About"
+                    title = "About",
                 ) {
                     ExpandableText(
                         modifier = Modifier.fillMaxWidth(),
@@ -89,7 +89,7 @@ private fun EntityDetailContent(
                         style = MaterialTheme.typography.labelLarge,
                         textAlign = TextAlign.Justify,
                         maxLines = 5,
-                        lineHeight = 18.sp
+                        lineHeight = 18.sp,
                     )
                 }
             }
@@ -101,7 +101,7 @@ private fun EntityDetailContent(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     text = "Domain: ${details.domain}",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -109,19 +109,19 @@ private fun EntityDetailContent(
         item(span = { GridItemSpan(2) }) {
             DetailSection(
                 modifier = Modifier.padding(horizontal = 8.dp),
-                title = "Games"
+                title = "Games",
             )
         }
 
         items(
             count = games.itemCount,
-            key = { index -> games[index]?.id ?: index }
+            key = { index -> games[index]?.id ?: index },
         ) { index ->
             games[index]?.let { game ->
                 GamesItemCard(
                     modifier = Modifier.padding(5.dp),
                     item = game,
-                    onNavigateToDetail = onNavigateToGame
+                    onNavigateToDetail = onNavigateToGame,
                 )
             }
         }
@@ -136,7 +136,7 @@ private fun EntityDetailContent(
                 item(span = { GridItemSpan(2) }) {
                     ErrorItem(
                         message = e.error.localizedMessage ?: "Unknown error",
-                        onRetry = { games.retry() }
+                        onRetry = { games.retry() },
                     )
                 }
             }
@@ -145,7 +145,7 @@ private fun EntityDetailContent(
                 item(span = { GridItemSpan(2) }) {
                     ErrorItem(
                         message = e.error.localizedMessage ?: "Error loading more",
-                        onRetry = { games.retry() }
+                        onRetry = { games.retry() },
                     )
                 }
             }
@@ -158,31 +158,30 @@ private fun EntityHeader(details: GameEntityDetails) {
     Box(
         Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(200.dp),
     ) {
         ImageWithOverlay(
             modifier = Modifier.fillMaxSize(),
-            details.imageBackground
+            details.imageBackground,
         )
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Bottom
+            verticalArrangement = Arrangement.Bottom,
         ) {
             Text(
                 text = details.name,
                 color = Color.White,
                 style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
             Spacer(Modifier.height(4.dp))
             Text(
                 text = "${details.gamesCount} games",
                 color = Color.White.copy(alpha = 0.85f),
-                style = MaterialTheme.typography.labelLarge
+                style = MaterialTheme.typography.labelLarge,
             )
         }
     }
 }
-

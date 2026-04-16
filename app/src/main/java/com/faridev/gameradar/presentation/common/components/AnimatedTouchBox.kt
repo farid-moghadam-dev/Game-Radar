@@ -28,7 +28,7 @@ fun AnimatedTouchBox(
     animationDuration: Int = 150,
     shape: Shape = RectangleShape,
     onClick: (() -> Unit)? = null,
-    pressScale : Float = 1.3f,
+    pressScale: Float = 1.3f,
     backgroundContent: @Composable () -> Unit = {},
     foregroundContent: @Composable BoxScope.(State<Boolean>) -> Unit = {},
 ) {
@@ -38,13 +38,13 @@ fun AnimatedTouchBox(
     val overlayAlpha = animateFloatAsState(
         targetValue = if (isPressed.value) overlayColor.alpha else 0f,
         animationSpec = tween(animationDuration),
-        label = "overlay_alpha"
+        label = "overlay_alpha",
     )
 
     val pressScale = animateFloatAsState(
         targetValue = if (isPressed.value) pressScale else 1f,
         animationSpec = tween(animationDuration),
-        label = "press_scale"
+        label = "press_scale",
     )
 
     Box(
@@ -52,21 +52,21 @@ fun AnimatedTouchBox(
             .clip(shape)
             .clickable(
                 interactionSource = interactionSource,
-                indication = ripple(color = rippleColor)
-            ) { onClick?.invoke() }
+                indication = ripple(color = rippleColor),
+            ) { onClick?.invoke() },
     ) {
         // Static Background Content + animated overlay
         BackgroundWithOverlay(
             overlayColor = overlayColor,
             overlayAlpha = overlayAlpha,
             scale = pressScale,
-            content = backgroundContent
+            content = backgroundContent,
         )
 
         // Foreground content
         ForegroundContent(
             isPressed = isPressed,
-            content = foregroundContent
+            content = foregroundContent,
         )
     }
 }
@@ -76,7 +76,7 @@ private fun BackgroundWithOverlay(
     overlayColor: Color,
     overlayAlpha: State<Float>,
     scale: State<Float>,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -88,7 +88,7 @@ private fun BackgroundWithOverlay(
             .drawWithContent {
                 drawContent()
                 drawRect(color = overlayColor.copy(alpha = overlayAlpha.value))
-            }
+            },
     ) {
         content()
     }
@@ -97,7 +97,7 @@ private fun BackgroundWithOverlay(
 @Composable
 private fun BoxScope.ForegroundContent(
     isPressed: State<Boolean>,
-    content: @Composable BoxScope.(State<Boolean>) -> Unit
+    content: @Composable BoxScope.(State<Boolean>) -> Unit,
 ) {
     Box(modifier = Modifier.matchParentSize()) {
         content(isPressed)

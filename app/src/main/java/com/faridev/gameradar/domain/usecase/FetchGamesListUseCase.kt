@@ -9,5 +9,4 @@ class FetchGamesListUseCase(private val gameRepository: GameRepository) {
 
     operator fun invoke(): Flow<PagingData<GameResult>> =
         gameRepository.getGamesStream()
-
 }

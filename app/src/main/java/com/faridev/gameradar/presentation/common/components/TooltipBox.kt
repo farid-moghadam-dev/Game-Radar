@@ -45,7 +45,7 @@ fun ShowTextTooltip(
     tooltipTextMinLines: Int = 1,
     tooltipTextOnTextLayout: ((TextLayoutResult) -> Unit)? = null,
     tooltipTextStyle: TextStyle = LocalTextStyle.current,
-    tooltipBoxContent: @Composable (tooltipState: TooltipState, tooltipScope: CoroutineScope) -> Unit
+    tooltipBoxContent: @Composable (tooltipState: TooltipState, tooltipScope: CoroutineScope) -> Unit,
 ) {
     val tooltipState = rememberTooltipState(isPersistent = true)
     val scope = rememberCoroutineScope()
@@ -55,8 +55,8 @@ fun ShowTextTooltip(
         tooltip = {
             RichTooltip(
                 colors = TooltipDefaults.richTooltipColors(
-                    containerColor = tooltipContainerColor
-                )
+                    containerColor = tooltipContainerColor,
+                ),
             ) {
                 Text(
                     text = tooltipText,
@@ -81,7 +81,7 @@ fun ShowTextTooltip(
         state = tooltipState,
         content = {
             tooltipBoxContent(tooltipState, scope)
-        }
+        },
     )
 }
 
@@ -89,13 +89,13 @@ fun ShowTextTooltip(
 @Composable
 fun ShowDefaultTextTooltip(
     tooltipText: String,
-    tooltipBoxContent: @Composable (tooltipState: TooltipState, tooltipScope: CoroutineScope) -> Unit
+    tooltipBoxContent: @Composable (tooltipState: TooltipState, tooltipScope: CoroutineScope) -> Unit,
 ) {
     ShowTextTooltip(
         tooltipText = tooltipText,
         tooltipContainerColor = MaterialTheme.colorScheme.secondaryContainer,
         tooltipTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
         tooltipTextFontSize = 13.sp,
-        tooltipBoxContent = tooltipBoxContent
+        tooltipBoxContent = tooltipBoxContent,
     )
 }

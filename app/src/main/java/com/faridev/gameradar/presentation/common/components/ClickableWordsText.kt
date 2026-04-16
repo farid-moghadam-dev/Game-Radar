@@ -34,7 +34,7 @@ fun ClickableWordsText(
     textAlign: TextAlign? = null,
     lineHeight: TextUnit = TextUnit.Unspecified,
     style: TextStyle = LocalTextStyle.current,
-    onWordClick: (String) -> Unit
+    onWordClick: (String) -> Unit,
 ) {
     val annotatedString = buildAnnotatedString {
         val words = text.split(Regex(",+"))
@@ -48,7 +48,7 @@ fun ClickableWordsText(
                     ),
                     linkInteractionListener = { it ->
                         onWordClick((it as LinkAnnotation.Clickable).tag)
-                    }
+                    },
                 )
                 withLink(clickableWord) { append(word) }
             }

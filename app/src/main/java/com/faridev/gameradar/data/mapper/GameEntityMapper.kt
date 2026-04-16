@@ -11,7 +11,7 @@ fun GameEntityListResDto.toDomain() = GameEntityList(
     count = count,
     next = next,
     previous = previous,
-    results = results.map { it.toDomain() }
+    results = results.map { it.toDomain() },
 )
 
 private fun GameEntityListResDto.Result.toDomain() = GameEntity(
@@ -20,13 +20,13 @@ private fun GameEntityListResDto.Result.toDomain() = GameEntity(
     slug = slug,
     gamesCount = gamesCount,
     imageBackground = imageBackground,
-    topGames = games.map { it.toDomain() }
+    topGames = games.map { it.toDomain() },
 )
 
 private fun GameEntityListResDto.Result.Game.toDomain() = GameEntityGameRef(
     id = id,
     name = name,
-    slug = slug
+    slug = slug,
 )
 
 fun GameEntityDetailsResDto.toDomain() = GameEntityDetails(
@@ -36,5 +36,5 @@ fun GameEntityDetailsResDto.toDomain() = GameEntityDetails(
     gamesCount = gamesCount,
     imageBackground = imageBackground,
     description = description,
-    domain = domain
+    domain = domain,
 )

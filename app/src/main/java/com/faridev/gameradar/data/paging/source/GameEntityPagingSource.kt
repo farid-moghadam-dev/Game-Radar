@@ -10,32 +10,28 @@ class GameEntityPagingSource(
     private val entityListApiCall: suspend (page: Int, pageSize: Int) -> UiState<GameEntityList>,
 ) : PagingSource<Int, GameEntity>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GameEntity> {
-        return try {
-            val page = params.key ?: 1
-            val pageSize = params.loadSize
-            val responseUiState = entityListApiCall(page, pageSize)
-            when (responseUiState) {
-                is UiState.Error -> LoadResult.Error(Exception(responseUiState.message))
-                UiState.Loading -> LoadResult.Invalid()
-                is UiState.Success<GameEntityList> -> {
-                    val responseData = responseUiState.data
-                    LoadResult.Page(
-                        data = responseData.results,
-                        prevKey = if (page == 1) null else page - 1,
-                        nextKey = if (responseData.next == null) null else page + 1
-                    )
-                }
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GameEntity> = try {
+        val page = params.key ?: 1
+        val pageSize = params.loadSize
+        val responseUiState = entityListApiCall(page, pageSize)
+        when (responseUiState) {
+            is UiState.Error -> LoadResult.Error(Exception(responseUiState.message))
+            UiState.Loading -> LoadResult.Invalid()
+            is UiState.Success<GameEntityList> -> {
+                val responseData = responseUiState.data
+                LoadResult.Page(
+                    data = responseData.results,
+                    prevKey = if (page == 1) null else page - 1,
+                    nextKey = if (responseData.next == null) null else page + 1,
+                )
             }
-        } catch (exception: Exception) {
-            LoadResult.Error(exception)
         }
+    } catch (exception: Exception) {
+        LoadResult.Error(exception)
     }
 
-    override fun getRefreshKey(state: PagingState<Int, GameEntity>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
-        }
+    override fun getRefreshKey(state: PagingState<Int, GameEntity>): Int? = state.anchorPosition?.let { anchorPosition ->
+        state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+            ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
     }
 }

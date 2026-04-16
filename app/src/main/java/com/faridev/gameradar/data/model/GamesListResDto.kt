@@ -18,7 +18,7 @@ data class GamesListResDto(
     @SerialName("results")
     val results: List<Result> = emptyList(),
     @SerialName("seo_title")
-    val seoTitle: String? = null
+    val seoTitle: String? = null,
 ) {
     @Serializable
     @JsonIgnoreUnknownKeys

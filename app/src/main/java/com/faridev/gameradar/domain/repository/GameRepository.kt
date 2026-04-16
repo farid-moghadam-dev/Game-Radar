@@ -21,16 +21,16 @@ interface GameRepository {
     suspend fun fetchEntityList(
         type: GameEntityType,
         page: Int,
-        pageSize: Int = 20
+        pageSize: Int = 20,
     ): UiState<GameEntityList>
 
     suspend fun fetchEntityDetails(
         type: GameEntityType,
-        entityId: Int
+        entityId: Int,
     ): UiState<GameEntityDetails>
 
     fun getGamesByEntityStream(
         type: GameEntityType,
-        entityId: Int
+        entityId: Int,
     ): Flow<PagingData<GameResult>>
 }

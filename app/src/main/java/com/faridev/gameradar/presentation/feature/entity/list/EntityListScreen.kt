@@ -9,17 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -40,7 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 fun EntityListScreen(
     type: GameEntityType,
     viewModel: EntityListViewModel = koinViewModel(),
-    onNavigateToDetail: (type: GameEntityType, entityId: Int) -> Unit
+    onNavigateToDetail: (type: GameEntityType, entityId: Int) -> Unit,
 ) {
     LaunchedEffect(type) { viewModel.setType(type) }
 
@@ -55,21 +52,21 @@ fun EntityListScreen(
 private fun EntityList(
     items: LazyPagingItems<GameEntity>,
     type: GameEntityType,
-    onNavigateToDetail: (GameEntityType, Int) -> Unit
+    onNavigateToDetail: (GameEntityType, Int) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(
             count = items.itemCount,
-            key = { index -> items[index]?.id ?: index }
+            key = { index -> items[index]?.id ?: index },
         ) { index ->
             items[index]?.let { entity ->
                 EntityCard(
                     entity = entity,
-                    onClick = { onNavigateToDetail(type, entity.id) }
+                    onClick = { onNavigateToDetail(type, entity.id) },
                 )
             }
         }
@@ -82,7 +79,7 @@ private fun EntityList(
                 item {
                     ErrorItem(
                         message = error.error.localizedMessage ?: "Unknown error",
-                        onRetry = { items.retry() }
+                        onRetry = { items.retry() },
                     )
                 }
             }
@@ -91,7 +88,7 @@ private fun EntityList(
                 item {
                     ErrorItem(
                         message = error.error.localizedMessage ?: "Error loading more",
-                        onRetry = { items.retry() }
+                        onRetry = { items.retry() },
                     )
                 }
             }
@@ -102,14 +99,14 @@ private fun EntityList(
 @Composable
 private fun EntityCard(
     entity: GameEntity,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     val click = remember(entity.id) { onClick }
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(160.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
     ) {
         Box(Modifier.fillMaxSize()) {
             AnimatedTouchBox(
@@ -120,15 +117,15 @@ private fun EntityCard(
                     ImageWithOverlay(
                         modifier = Modifier.fillMaxSize(),
                         imageUrl = entity.imageBackground,
-                        overlayColor = MaterialTheme.colorScheme.onSurface.copy(0.4f)
+                        overlayColor = MaterialTheme.colorScheme.onSurface.copy(0.4f),
                     )
-                }
+                },
             )
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(12.dp),
-                verticalArrangement = Arrangement.Bottom
+                verticalArrangement = Arrangement.Bottom,
             ) {
                 Text(
                     text = entity.name,
@@ -136,13 +133,13 @@ private fun EntityCard(
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
                     text = "${entity.gamesCount} games",
                     color = Color.White.copy(alpha = 0.85f),
-                    style = MaterialTheme.typography.labelLarge
+                    style = MaterialTheme.typography.labelLarge,
                 )
                 if (entity.topGames.isNotEmpty()) {
                     Spacer(Modifier.height(4.dp))
@@ -151,7 +148,7 @@ private fun EntityCard(
                         color = Color.White.copy(alpha = 0.7f),
                         style = MaterialTheme.typography.labelMedium,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

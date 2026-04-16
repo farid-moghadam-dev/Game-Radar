@@ -23,10 +23,10 @@ class GameEntityMapperTest {
                     imageBackground = "img.jpg",
                     games = listOf(
                         GameEntityListResDto.Result.Game(id = 4200, name = "Portal 2", slug = "portal-2"),
-                        GameEntityListResDto.Result.Game(id = 13536, name = "Portal", slug = "portal")
-                    )
-                )
-            )
+                        GameEntityListResDto.Result.Game(id = 13536, name = "Portal", slug = "portal"),
+                    ),
+                ),
+            ),
         )
 
         val domain = dto.toDomain()
@@ -53,7 +53,7 @@ class GameEntityMapperTest {
             gamesCount = 123_329,
             imageBackground = "img.jpg",
             description = "<p>Steam is cool</p>",
-            domain = "store.steampowered.com"
+            domain = "store.steampowered.com",
         )
 
         val domain = dto.toDomain()

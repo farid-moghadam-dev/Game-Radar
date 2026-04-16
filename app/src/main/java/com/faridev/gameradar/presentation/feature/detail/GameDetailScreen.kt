@@ -5,7 +5,6 @@ package com.faridev.gameradar.presentation.feature.detail
 import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -93,17 +92,17 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = koinViewModel(), gameId: I
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .verticalScroll(scrollState)
+                        .verticalScroll(scrollState),
                 ) {
                     DetailTopBar(
-                        gameDetails = gameDetails
+                        gameDetails = gameDetails,
                     )
 
                     DetailContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
-                        gameDetails = gameDetails
+                        gameDetails = gameDetails,
                     )
                 }
             }
@@ -114,33 +113,33 @@ fun GameDetailScreen(viewModel: GameDetailViewModel = koinViewModel(), gameId: I
 @Composable
 private fun DetailTopBar(
     modifier: Modifier = Modifier,
-    gameDetails: GameDetails
+    gameDetails: GameDetails,
 ) {
     Box(
         modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(200.dp),
     ) {
         ImageWithOverlay(
             modifier = Modifier.fillMaxSize(),
-            gameDetails.backgroundImageAdditional ?: gameDetails.backgroundImage
+            gameDetails.backgroundImageAdditional ?: gameDetails.backgroundImage,
         )
 
         Row(
             Modifier
                 .fillMaxSize()
                 .padding(20.dp),
-            horizontalArrangement = Arrangement.spacedBy(20.dp)
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             TopBarDetail(
                 modifier = Modifier.weight(0.6f),
-                gameDetails = gameDetails
+                gameDetails = gameDetails,
             )
 
             Card(
                 Modifier
                     .weight(0.4f)
-                    .fillMaxHeight()
+                    .fillMaxHeight(),
             ) {
                 AsyncImage(
                     modifier = Modifier.fillMaxSize(),
@@ -160,7 +159,7 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
         Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
             Card(
                 colors = CardDefaults.cardColors(containerColor = Color.White),
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(4.dp),
             ) {
                 gameDetails.released?.let {
                     Text(
@@ -168,7 +167,7 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                         text = gameDetails.released,
                         color = Color.Black,
                         style = MaterialTheme.typography.labelMedium,
-                        fontFamily = Fonts.ArialRounded
+                        fontFamily = Fonts.ArialRounded,
                     )
                 }
             }
@@ -180,7 +179,7 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                     style = MaterialTheme.typography.headlineMedium,
                     color = Color.White,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
@@ -192,13 +191,13 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                 text = "Average Playtime: ${gameDetails.playtime ?: "N/A"}",
                 color = Color.White,
                 style = MaterialTheme.typography.labelLarge,
-                fontFamily = Fonts.ArialRounded
+                fontFamily = Fonts.ArialRounded,
             )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Absolute.SpaceBetween
+                horizontalArrangement = Arrangement.Absolute.SpaceBetween,
             ) {
                 Card(
                     modifier = Modifier.noRippleClickable {
@@ -208,28 +207,28 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                             },
                             onUrlValidationError = {
                                 context.showShortToast("Metacritic domain is not valid")
-                            }
+                            },
                         )
                     },
                     colors = CardDefaults.cardColors(containerColor = Color.White),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(4.dp),
                 ) {
                     Row(
                         modifier = Modifier.padding(3.dp),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(5.dp)
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
                     ) {
                         Image(
                             painter = painterResource(R.drawable.ic_meta),
                             contentDescription = "Metacritic Rate",
-                            contentScale = ContentScale.Crop
+                            contentScale = ContentScale.Crop,
                         )
 
                         Text(
                             text = "${gameDetails.metacritic ?: "N/A"}",
                             color = Color.Black,
                             style = MaterialTheme.typography.titleMedium,
-                            fontSize = 14.sp
+                            fontSize = 14.sp,
                         )
                     }
                 }
@@ -237,20 +236,21 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                 Card(
                     colors = CardDefaults.cardColors(
                         containerColor = getColorFromRate(
-                            gameDetails.rating ?: 0.0, gameDetails.ratingTop?.toDouble() ?: 0.0
-                        )
+                            gameDetails.rating ?: 0.0,
+                            gameDetails.ratingTop?.toDouble() ?: 0.0,
+                        ),
                     ),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(4.dp),
                 ) {
                     Row(
                         modifier = Modifier.height(IntrinsicSize.Max),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
                             modifier = Modifier.padding(horizontal = 3.dp),
                             painter = painterResource(R.drawable.ic_rate),
                             contentDescription = "Rate icon",
-                            tint = Color.White
+                            tint = Color.White,
                         )
 
                         VerticalDivider(
@@ -258,7 +258,7 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                                 .fillMaxHeight()
                                 .padding(vertical = 3.dp),
                             thickness = (1.5).dp,
-                            color = Color.White
+                            color = Color.White,
                         )
 
                         Text(
@@ -266,7 +266,7 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                             text = "${gameDetails.rating ?: "N/A"}/${gameDetails.ratingTop ?: "N/A"}",
                             color = Color.White,
                             fontSize = 15.sp,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                     }
                 }
@@ -281,7 +281,7 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                             },
                             onUrlValidationError = {
                                 context.showShortToast("Store domain is not valid")
-                            }
+                            },
                         )
                         openUrlInBrowser(context = context, gameDetails.website)
                     },
@@ -290,7 +290,7 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                     style = MaterialTheme.typography.labelMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    textDecoration = TextDecoration.Underline
+                    textDecoration = TextDecoration.Underline,
                 )
             }
         }
@@ -302,7 +302,7 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
                 .fillMaxWidth()
                 .wrapContentHeight(),
             contentPadding = PaddingValues(horizontal = 3.dp),
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             items(gameDetails.parentPlatforms.mapNotNull { it.platform }) { parentPlatform ->
                 PlatformIcon(parentPlatform)
@@ -314,7 +314,7 @@ private fun TopBarDetail(modifier: Modifier = Modifier, gameDetails: GameDetails
 @Composable
 private fun DetailContent(
     modifier: Modifier = Modifier,
-    gameDetails: GameDetails
+    gameDetails: GameDetails,
 ) {
     val context = LocalContext.current
     Column(modifier = modifier) {
@@ -326,7 +326,7 @@ private fun DetailContent(
                     style = MaterialTheme.typography.labelLarge,
                     textAlign = TextAlign.Justify,
                     maxLines = 5,
-                    lineHeight = 18.sp
+                    lineHeight = 18.sp,
                 )
             }
         }
@@ -337,21 +337,21 @@ private fun DetailContent(
                     Text(
                         text = gameDetails.released,
                         style = MaterialTheme.typography.labelLarge,
-                        lineHeight = 18.sp
+                        lineHeight = 18.sp,
                     )
                 }
             }
 
             DetailSection(modifier = Modifier.weight(1f), title = "Age Rating") {
                 ShowDefaultTextTooltip(
-                    tooltipText = gameDetails.esrbRating.description
+                    tooltipText = gameDetails.esrbRating.description,
                 ) { tooltipState, scope ->
                     Row(
                         modifier = Modifier.clickable {
                             scope.launch { tooltipState.show() }
                         },
                         horizontalArrangement = Arrangement.spacedBy(5.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Image(
                             modifier = Modifier
@@ -359,13 +359,13 @@ private fun DetailContent(
                                 .aspectRatio(0.75f),
                             painter = painterResource(gameDetails.esrbRating.iconResId),
                             contentScale = ContentScale.Fit,
-                            contentDescription = "ESRB Rating"
+                            contentDescription = "ESRB Rating",
                         )
 
                         Text(
                             text = gameDetails.esrbRating.title,
                             style = MaterialTheme.typography.labelLarge,
-                            lineHeight = 18.sp
+                            lineHeight = 18.sp,
                         )
                     }
                 }
@@ -378,7 +378,7 @@ private fun DetailContent(
                     modifier = Modifier.fillMaxWidth(),
                     text = gameDetails.genres.mapNotNull { it.name }.joinToString(", "),
                     style = MaterialTheme.typography.labelLarge,
-                    lineHeight = 18.sp
+                    lineHeight = 18.sp,
                 )
             }
         }
@@ -389,7 +389,7 @@ private fun DetailContent(
                     modifier = Modifier.fillMaxWidth(),
                     text = gameDetails.publishers.mapNotNull { it.name }.joinToString(", "),
                     style = MaterialTheme.typography.labelLarge,
-                    lineHeight = 18.sp
+                    lineHeight = 18.sp,
                 )
             }
         }
@@ -400,7 +400,7 @@ private fun DetailContent(
                     modifier = Modifier.fillMaxWidth(),
                     text = gameDetails.developers.mapNotNull { it.name }.joinToString(", "),
                     style = MaterialTheme.typography.labelLarge,
-                    lineHeight = 18.sp
+                    lineHeight = 18.sp,
                 )
             }
         }
@@ -411,9 +411,9 @@ private fun DetailContent(
                     text = gameDetails.platforms.mapNotNull { it.platform?.name }
                         .joinToString(", "),
                     style = MaterialTheme.typography.labelLarge,
-                    lineHeight = 18.sp
+                    lineHeight = 18.sp,
                 ) { clickedWord ->
-                    //TODO show clicked platform games in future
+                    // TODO show clicked platform games in future
                     context.showShortToast("Platform : $clickedWord clicked")
                 }
             }
@@ -436,7 +436,7 @@ private fun DetailContent(
                     style = MaterialTheme.typography.labelLarge,
                     lineHeight = 18.sp,
                 ) { clickedWord ->
-                    //TODO show clicked games with clicked tag in future
+                    // TODO show clicked games with clicked tag in future
                     context.showShortToast("Tag : $clickedWord clicked")
                 }
             }
@@ -452,7 +452,7 @@ private fun PlatformIcon(platform: ParentPlatformInfo) {
             .padding(horizontal = 5.dp),
         painter = icon,
         contentScale = ContentScale.Inside,
-        contentDescription = platform.name
+        contentDescription = platform.name,
     )
 }
 
@@ -463,7 +463,7 @@ private fun StoreItem(store: Store) {
         modifier = Modifier
             .height(120.dp)
             .aspectRatio(1.7f)
-            .padding(horizontal = 5.dp)
+            .padding(horizontal = 5.dp),
     ) {
         AnimatedTouchBox(
             overlayColor = MaterialTheme.colorScheme.onSurface,
@@ -474,13 +474,13 @@ private fun StoreItem(store: Store) {
                     },
                     onUrlValidationError = {
                         context.showShortToast("Store domain is not valid")
-                    }
+                    },
                 )
             },
             backgroundContent = {
                 ImageWithOverlay(
                     modifier = Modifier.fillMaxSize(),
-                    imageUrl = store.imageBackground
+                    imageUrl = store.imageBackground,
                 )
             },
             foregroundContent = {
@@ -489,17 +489,17 @@ private fun StoreItem(store: Store) {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(
                         3.dp,
-                        alignment = Alignment.CenterHorizontally
-                    )
+                        alignment = Alignment.CenterHorizontally,
+                    ),
                 ) {
                     StoreIcon(store)
                     Text(
                         text = store.name ?: "N/A",
                         style = MaterialTheme.typography.headlineMedium,
-                        color = Color.White
+                        color = Color.White,
                     )
                 }
-            }
+            },
         )
     }
 }
@@ -512,7 +512,7 @@ private fun StoreIcon(store: Store) {
             .padding(horizontal = 5.dp),
         contentDescription = store.name,
         painter = icon,
-        tint = Color.White
+        tint = Color.White,
     )
 }
 

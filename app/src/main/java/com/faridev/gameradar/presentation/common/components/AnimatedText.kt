@@ -25,7 +25,7 @@ fun AnimatedText(
     text: String,
     textStyle: TextStyle = TextStyle(),
     typingDelayInMs: Long = 100L,
-    startDelayInMs: Long = 1000
+    startDelayInMs: Long = 1000,
 ) {
     // Use BreakIterator as it correctly iterates over characters regardless of how they are
     // stored, for example, some emojis are made up of multiple characters.
@@ -50,6 +50,6 @@ fun AnimatedText(
     Text(
         modifier = modifier,
         text = substringText,
-        style = textStyle
+        style = textStyle,
     )
 }

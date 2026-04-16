@@ -9,6 +9,6 @@ class FetchEntityDetailsUseCase(private val gameRepository: GameRepository) {
 
     suspend operator fun invoke(
         type: GameEntityType,
-        entityId: Int
+        entityId: Int,
     ): UiState<GameEntityDetails> = gameRepository.fetchEntityDetails(type, entityId)
 }

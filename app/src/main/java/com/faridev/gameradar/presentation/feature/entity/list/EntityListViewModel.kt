@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 
 class EntityListViewModel(
-    private val fetchEntityList: FetchEntityListUseCase
+    private val fetchEntityList: FetchEntityListUseCase,
 ) : ViewModel() {
 
     private val typeFlow = MutableStateFlow<GameEntityType?>(null)

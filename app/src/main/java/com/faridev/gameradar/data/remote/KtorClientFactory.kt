@@ -18,7 +18,6 @@ import timber.log.Timber
 object KtorClientFactory {
     private const val BASE_URL = "https://api.rawg.io/api/"
 
-
     fun create(): HttpClient =
         HttpClient(Android) {
             install(Logging) {
@@ -37,7 +36,7 @@ object KtorClientFactory {
                         prettyPrint = true
                         isLenient = true
                         ignoreUnknownKeys = true
-                    }
+                    },
                 )
             }
 

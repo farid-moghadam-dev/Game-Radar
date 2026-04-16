@@ -24,7 +24,7 @@ class GameApi(private val client: HttpClient) {
     suspend fun fetchEntityList(
         type: GameEntityType,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): GameEntityListResDto =
         client.get(type.apiPath) {
             parameter("page", page)
@@ -33,7 +33,7 @@ class GameApi(private val client: HttpClient) {
 
     suspend fun fetchEntityDetails(
         type: GameEntityType,
-        entityId: Int
+        entityId: Int,
     ): GameEntityDetailsResDto =
         client.get("${type.apiPath}/$entityId").body()
 
@@ -41,7 +41,7 @@ class GameApi(private val client: HttpClient) {
         type: GameEntityType,
         entityId: Int,
         page: Int,
-        pageSize: Int
+        pageSize: Int,
     ): GamesListResDto =
         client.get("games") {
             parameter(type.gamesFilterParam, entityId)

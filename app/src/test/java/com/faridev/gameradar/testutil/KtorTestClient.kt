@@ -19,7 +19,7 @@ private const val BASE_URL = "https://api.rawg.io/api/"
  */
 fun testHttpClient(
     recorded: MutableList<HttpRequestData> = mutableListOf(),
-    handler: MockRequestHandler
+    handler: MockRequestHandler,
 ): HttpClient {
     val engineConfig = MockEngineConfig().apply {
         addHandler { request ->
@@ -29,7 +29,12 @@ fun testHttpClient(
     }
     return HttpClient(MockEngine(engineConfig)) {
         install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true; isLenient = true })
+            json(
+                Json {
+                    ignoreUnknownKeys = true
+                    isLenient = true
+                },
+            )
         }
         defaultRequest {
             url {

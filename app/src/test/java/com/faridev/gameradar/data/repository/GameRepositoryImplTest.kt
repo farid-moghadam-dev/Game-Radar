@@ -28,7 +28,7 @@ class GameRepositoryImplTest {
             respond(
                 content = ByteReadChannel(GAMES_LIST_JSON),
                 status = HttpStatusCode.OK,
-                headers = jsonHeaders
+                headers = jsonHeaders,
             )
         }
         val repo = GameRepositoryImpl(GameApi(client))
@@ -69,7 +69,7 @@ class GameRepositoryImplTest {
             respond(
                 content = ByteReadChannel(DEVELOPER_DETAILS_JSON),
                 status = HttpStatusCode.OK,
-                headers = jsonHeaders
+                headers = jsonHeaders,
             )
         }
         val repo = GameRepositoryImpl(GameApi(client))

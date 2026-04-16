@@ -43,14 +43,14 @@ data class Genre(
     val id: Int?,
     val imageBackground: String?,
     val name: String?,
-    val slug: String?
+    val slug: String?,
 )
 
 @Immutable
 data class PlatformInfo(
     val platform: Platform?,
     val releasedAt: String?,
-    val requirements: Requirements?
+    val requirements: Requirements?,
 )
 
 @Immutable
@@ -62,13 +62,13 @@ data class Platform(
     val name: String?,
     val slug: String?,
     val yearEnd: Int?,
-    val yearStart: Int?
+    val yearStart: Int?,
 )
 
 @Immutable
 data class Requirements(
     val minimum: String?,
-    val recommended: String?
+    val recommended: String?,
 )
 
 @Immutable
@@ -77,14 +77,14 @@ data class Publisher(
     val id: Int?,
     val imageBackground: String?,
     val name: String?,
-    val slug: String?
+    val slug: String?,
 )
 
 @Immutable
 data class StoreInfo(
     val store: Store?,
     val id: Int?,
-    val url: String?
+    val url: String?,
 )
 
 @Immutable
@@ -94,7 +94,7 @@ data class Store(
     val id: Int?,
     val imageBackground: String?,
     val name: String?,
-    val slug: String?
+    val slug: String?,
 )
 
 @Immutable
@@ -104,5 +104,5 @@ data class Tag(
     val imageBackground: String?,
     val language: String?,
     val name: String?,
-    val slug: String?
+    val slug: String?,
 )

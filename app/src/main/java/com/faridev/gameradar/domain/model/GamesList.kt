@@ -8,7 +8,7 @@ data class GamesList(
     val next: String?,
     val previous: String?,
     val results: List<GameResult>,
-    val seoTitle: String?
+    val seoTitle: String?,
 )
 
 @Immutable
@@ -17,5 +17,5 @@ data class GameResult(
     val id: Int,
     val metacritic: Int?,
     val name: String,
-    val parentPlatforms: List<ParentPlatform> = emptyList()
+    val parentPlatforms: List<ParentPlatform> = emptyList(),
 )

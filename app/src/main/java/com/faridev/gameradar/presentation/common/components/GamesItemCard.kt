@@ -33,7 +33,7 @@ import com.faridev.gameradar.domain.model.GameResult
 fun GamesItemCard(
     modifier: Modifier = Modifier,
     item: GameResult,
-    onNavigateToDetail: (gameId: Int) -> Unit
+    onNavigateToDetail: (gameId: Int) -> Unit,
 ) {
     // Create stable lambda to avoid recomposition
     val onItemClick = remember(item.id) {
@@ -50,22 +50,22 @@ fun GamesItemCard(
             onClick = onItemClick,
             backgroundContent = {
                 GameBackgroundImage(
-                    imageUrl = item.backgroundImage
+                    imageUrl = item.backgroundImage,
                 )
             },
             foregroundContent = { isPressed ->
                 GameForegroundContent(
                     isPressed = isPressed,
-                    gameName = item.name
+                    gameName = item.name,
                 )
-            }
+            },
         )
     }
 }
 
 @Composable
 private fun GameBackgroundImage(
-    imageUrl: String?
+    imageUrl: String?,
 ) {
     AsyncImage(
         modifier = Modifier
@@ -81,14 +81,14 @@ private fun GameBackgroundImage(
             .build(),
         placeholder = painterResource(R.drawable.ic_placeholder),
         contentDescription = "Game Image",
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Crop,
     )
 }
 
 @Composable
 private fun BoxScope.GameForegroundContent(
     isPressed: State<Boolean>,
-    gameName: String
+    gameName: String,
 ) {
     if (isPressed.value) {
         Text(
@@ -99,7 +99,7 @@ private fun BoxScope.GameForegroundContent(
             text = gameName,
             style = MaterialTheme.typography.titleMedium,
             color = Color.White,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }

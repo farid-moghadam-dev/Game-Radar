@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
 
                 DoubleBackPressToExit(
                     onFirstBackPress = { showExitToast = true },
-                    onExit = { finish() }
+                    onExit = { finish() },
                 )
 
                 if (showExitToast) {
@@ -85,7 +85,7 @@ class MainActivity : ComponentActivity() {
 private fun MainNavigationDrawer(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
 ) {
     val scope = rememberCoroutineScope()
 
@@ -95,16 +95,16 @@ private fun MainNavigationDrawer(
         drawerContent = {
             ModalDrawerSheet(
                 modifier = Modifier.width(280.dp),
-                drawerContainerColor = MaterialTheme.colorScheme.secondaryContainer
+                drawerContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             ) {
                 MainNavigationDrawerContent(
                     onItemClick = { type ->
                         scope.launch { drawerState.close() }
                         navController.navigate(NavRoutes.EntityList(type))
-                    }
+                    },
                 )
             }
-        }
+        },
     ) {
         MainScreenContent(navController = navController)
     }
@@ -112,13 +112,13 @@ private fun MainNavigationDrawer(
 
 @Composable
 private fun MainNavigationDrawerContent(
-    onItemClick: (GameEntityType) -> Unit
+    onItemClick: (GameEntityType) -> Unit,
 ) {
     Column {
         Card(
             modifier = Modifier.padding(10.dp),
             shape = RoundedCornerShape(15.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         ) {
             Image(
                 modifier = Modifier
@@ -126,7 +126,7 @@ private fun MainNavigationDrawerContent(
                     .aspectRatio(2.2f),
                 painter = painterResource(R.drawable.banner),
                 contentScale = ContentScale.Crop,
-                contentDescription = "Banner"
+                contentDescription = "Banner",
             )
         }
 
@@ -147,7 +147,7 @@ private fun DrawerItem(itemTitle: String, onClick: () -> Unit = {}) {
             .padding(8.dp),
         text = itemTitle,
         textAlign = TextAlign.Center,
-        style = MaterialTheme.typography.titleLarge
+        style = MaterialTheme.typography.titleLarge,
     )
 }
 
@@ -157,7 +157,7 @@ private fun MainScreenContent(navController: NavHostController) {
         NavHost(
             modifier = Modifier.fillMaxSize(),
             navController = navController,
-            startDestination = NavRoutes.Home
+            startDestination = NavRoutes.Home,
         ) {
             composable<NavRoutes.Home> {
                 HomeScreen { gameId ->
@@ -181,7 +181,7 @@ private fun MainScreenContent(navController: NavHostController) {
                     entityId = route.entityId,
                     onNavigateToGame = { gameId ->
                         navController.navigate(NavRoutes.Detail(gameId))
-                    }
+                    },
                 )
             }
         }
@@ -192,7 +192,7 @@ private fun MainScreenContent(navController: NavHostController) {
 fun DoubleBackPressToExit(
     exitTimeout: Long = 2000L,
     onExit: () -> Unit,
-    onFirstBackPress: () -> Unit
+    onFirstBackPress: () -> Unit,
 ) {
     var lastBackPressTime by remember { mutableLongStateOf(0L) }
 

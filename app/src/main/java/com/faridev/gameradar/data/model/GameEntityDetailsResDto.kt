@@ -15,5 +15,5 @@ data class GameEntityDetailsResDto(
     @SerialName("games_count") val gamesCount: Int = 0,
     @SerialName("image_background") val imageBackground: String? = null,
     @SerialName("description") val description: String? = null,
-    @SerialName("domain") val domain: String? = null
+    @SerialName("domain") val domain: String? = null,
 )

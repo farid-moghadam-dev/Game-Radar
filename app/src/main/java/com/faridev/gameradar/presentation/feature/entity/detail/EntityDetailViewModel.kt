@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 
 class EntityDetailViewModel(
     private val fetchEntityDetails: FetchEntityDetailsUseCase,
-    private val fetchGamesByEntity: FetchGamesByEntityUseCase
+    private val fetchGamesByEntity: FetchGamesByEntityUseCase,
 ) : ViewModel() {
 
     var detailsState: UiState<GameEntityDetails> by mutableStateOf(UiState.Loading)
@@ -32,8 +32,11 @@ class EntityDetailViewModel(
     @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
     val gamesFlow: Flow<PagingData<GameResult>> = request
         .flatMapLatest { req ->
-            if (req == null) flowOf(PagingData.empty())
-            else fetchGamesByEntity(req.first, req.second)
+            if (req == null) {
+                flowOf(PagingData.empty())
+            } else {
+                fetchGamesByEntity(req.first, req.second)
+            }
         }
         .cachedIn(viewModelScope)
 

@@ -40,13 +40,13 @@ fun GameDetailsResDto.toDomain(): GameDetails = GameDetails(
     slug = slug,
     stores = stores.map { it.toDomain() },
     tags = tags.map { it.toDomain() },
-    website = website
+    website = website,
 )
 
 private fun GameDetailsResDto.Developer.toDomain() = Developer(
     id = id,
     name = name,
-    slug = slug
+    slug = slug,
 )
 
 private fun GameDetailsResDto.EsrbRating.toDomain() =
@@ -57,13 +57,13 @@ private fun GameDetailsResDto.Genre.toDomain() = Genre(
     id = id,
     imageBackground = imageBackground,
     name = name,
-    slug = slug
+    slug = slug,
 )
 
 private fun GameDetailsResDto.Platform.toDomain() = PlatformInfo(
     platform = platform?.toDomain(),
     releasedAt = releasedAt,
-    requirements = requirements?.toDomain()
+    requirements = requirements?.toDomain(),
 )
 
 private fun GameDetailsResDto.Platform.Platform.toDomain() = Platform(
@@ -74,13 +74,13 @@ private fun GameDetailsResDto.Platform.Platform.toDomain() = Platform(
     name = name,
     slug = slug,
     yearEnd = yearEnd,
-    yearStart = yearStart
+    yearStart = yearStart,
 )
 
 private fun GameDetailsResDto.Platform.Requirements.toDomain() =
     Requirements(
         minimum = minimum,
-        recommended = recommended
+        recommended = recommended,
     )
 
 private fun GameDetailsResDto.Publisher.toDomain() = Publisher(
@@ -88,13 +88,13 @@ private fun GameDetailsResDto.Publisher.toDomain() = Publisher(
     id = id,
     imageBackground = imageBackground,
     name = name,
-    slug = slug
+    slug = slug,
 )
 
 private fun GameDetailsResDto.Store.toDomain(): StoreInfo = StoreInfo(
     store = store?.toDomain(),
     id = id,
-    url = url
+    url = url,
 )
 
 private fun GameDetailsResDto.Store.Store.toDomain() = Store(
@@ -103,7 +103,7 @@ private fun GameDetailsResDto.Store.Store.toDomain() = Store(
     id = id,
     imageBackground = imageBackground,
     name = name,
-    slug = slug
+    slug = slug,
 )
 
 private fun GameDetailsResDto.Tag.toDomain(): Tag = Tag(
@@ -112,16 +112,14 @@ private fun GameDetailsResDto.Tag.toDomain(): Tag = Tag(
     slug = slug,
     language = language,
     gamesCount = gamesCount,
-    imageBackground = imageBackground
+    imageBackground = imageBackground,
 )
 
-private fun String.formatReleaseDate(): String {
-    return try {
-        val parser = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.US)
-        val date = parser.parse(this)
-        if (date != null) formatter.format(date) else this
-    } catch (_: Exception) {
-        this
-    }
+private fun String.formatReleaseDate(): String = try {
+    val parser = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    val formatter = SimpleDateFormat("MMM dd, yyyy", Locale.US)
+    val date = parser.parse(this)
+    if (date != null) formatter.format(date) else this
+} catch (_: Exception) {
+    this
 }

@@ -66,7 +66,7 @@ data class GameDetailsResDto(
         @SerialName("name")
         val name: String? = null,
         @SerialName("slug")
-        val slug: String? = null
+        val slug: String? = null,
     )
 
     @Serializable
@@ -77,7 +77,7 @@ data class GameDetailsResDto(
         @SerialName("name")
         val name: String? = null,
         @SerialName("slug")
-        val slug: String? = null
+        val slug: String? = null,
     )
 
     @Serializable
@@ -92,7 +92,7 @@ data class GameDetailsResDto(
         @SerialName("name")
         val name: String? = null,
         @SerialName("slug")
-        val slug: String? = null
+        val slug: String? = null,
     )
 
     @Serializable
@@ -103,7 +103,7 @@ data class GameDetailsResDto(
         @SerialName("released_at")
         val releasedAt: String? = null,
         @SerialName("requirements")
-        val requirements: Requirements? = null
+        val requirements: Requirements? = null,
     ) {
         @Serializable
         @JsonIgnoreUnknownKeys
@@ -123,7 +123,7 @@ data class GameDetailsResDto(
             @SerialName("year_end")
             val yearEnd: Int? = null,
             @SerialName("year_start")
-            val yearStart: Int? = null
+            val yearStart: Int? = null,
         )
 
         @Serializable
@@ -132,7 +132,7 @@ data class GameDetailsResDto(
             @SerialName("minimum")
             val minimum: String? = null,
             @SerialName("recommended")
-            val recommended: String? = null
+            val recommended: String? = null,
         )
     }
 
@@ -148,7 +148,7 @@ data class GameDetailsResDto(
         @SerialName("name")
         val name: String? = null,
         @SerialName("slug")
-        val slug: String? = null
+        val slug: String? = null,
     )
 
     @Serializable
@@ -159,7 +159,7 @@ data class GameDetailsResDto(
         @SerialName("store")
         val store: Store? = null,
         @SerialName("url")
-        val url: String? = null
+        val url: String? = null,
     ) {
         @Serializable
         @JsonIgnoreUnknownKeys
@@ -175,7 +175,7 @@ data class GameDetailsResDto(
             @SerialName("name")
             val name: String? = null,
             @SerialName("slug")
-            val slug: String? = null
+            val slug: String? = null,
         )
     }
 
@@ -193,6 +193,6 @@ data class GameDetailsResDto(
         @SerialName("name")
         val name: String? = null,
         @SerialName("slug")
-        val slug: String? = null
+        val slug: String? = null,
     )
 }

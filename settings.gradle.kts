@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Game Radar"
 include(":app")
- 

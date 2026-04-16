@@ -12,7 +12,7 @@ fun GamesListResDto.toDomain() = GamesList(
     next = next,
     previous = previous,
     results = results.map { it.toDomain() },
-    seoTitle = seoTitle
+    seoTitle = seoTitle,
 )
 
 private fun GamesListResDto.Result.toDomain() = GameResult(
@@ -20,15 +20,15 @@ private fun GamesListResDto.Result.toDomain() = GameResult(
     id = id,
     metacritic = metacritic,
     name = name,
-    parentPlatforms = parentPlatforms.map { it.toDomain() }
+    parentPlatforms = parentPlatforms.map { it.toDomain() },
 )
 
 fun ParentPlatformDto.toDomain() = ParentPlatform(
-    platform = platform?.toDomain()
+    platform = platform?.toDomain(),
 )
 
 private fun ParentPlatformDto.Platform.toDomain() = ParentPlatformInfo(
     id = id,
     name = name,
-    slug = slug
+    slug = slug,
 )

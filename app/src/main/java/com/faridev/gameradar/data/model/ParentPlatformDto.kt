@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ParentPlatformDto(
     @SerialName("platform")
-    val platform: Platform? = null
+    val platform: Platform? = null,
 ) {
     @Serializable
     data class Platform(
@@ -15,6 +15,6 @@ data class ParentPlatformDto(
         @SerialName("name")
         val name: String? = null,
         @SerialName("slug")
-        val slug: String? = null
+        val slug: String? = null,
     )
 }

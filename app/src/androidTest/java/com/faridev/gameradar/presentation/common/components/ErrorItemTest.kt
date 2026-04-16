@@ -21,7 +21,7 @@ class ErrorItemTest {
         composeTestRule.setContent {
             ErrorItem(
                 message = "You're offline. Check your connection and try again.",
-                onRetry = { retryCount++ }
+                onRetry = { retryCount++ },
             )
         }
 

@@ -45,7 +45,7 @@ class GameDetailViewModelTest {
     @Test
     fun `initial state is Loading`() {
         val vm = GameDetailViewModel(
-            FetchGameDetailsUseCase(FakeRepo(UiState.Success(fakeGameDetails(1, "x"))))
+            FetchGameDetailsUseCase(FakeRepo(UiState.Success(fakeGameDetails(1, "x")))),
         )
         assertEquals(UiState.Loading, vm.detailsState)
     }
@@ -54,7 +54,7 @@ class GameDetailViewModelTest {
     fun `load moves state to Success`() = runTest(dispatcher) {
         val expected = fakeGameDetails(id = 42, name = "Half-Life 3")
         val vm = GameDetailViewModel(
-            FetchGameDetailsUseCase(FakeRepo(UiState.Success(expected)))
+            FetchGameDetailsUseCase(FakeRepo(UiState.Success(expected))),
         )
 
         vm.load(gameId = 42)
@@ -68,7 +68,7 @@ class GameDetailViewModelTest {
     @Test
     fun `load surfaces repository errors`() = runTest(dispatcher) {
         val vm = GameDetailViewModel(
-            FetchGameDetailsUseCase(FakeRepo(UiState.Error(AppError.NoConnection)))
+            FetchGameDetailsUseCase(FakeRepo(UiState.Error(AppError.NoConnection))),
         )
 
         vm.load(gameId = 1)
@@ -99,7 +99,7 @@ class GameDetailViewModelTest {
     // -- Fakes ----------------------------------------------------------------
 
     private class FakeRepo(
-        var detailsResult: UiState<GameDetails>
+        var detailsResult: UiState<GameDetails>,
     ) : GameRepository {
         override fun getGamesStream(): Flow<PagingData<GameResult>> = flowOf(PagingData.empty())
         override suspend fun fetchGamesList(page: Int, pageSize: Int): UiState<GamesList> =
@@ -110,17 +110,17 @@ class GameDetailViewModelTest {
         override suspend fun fetchEntityList(
             type: GameEntityType,
             page: Int,
-            pageSize: Int
+            pageSize: Int,
         ): UiState<GameEntityList> = UiState.Success(GameEntityList(0, null, null, emptyList()))
         override suspend fun fetchEntityDetails(
             type: GameEntityType,
-            entityId: Int
+            entityId: Int,
         ): UiState<GameEntityDetails> = UiState.Success(
-            GameEntityDetails(0, "", null, 0, null, null, null)
+            GameEntityDetails(0, "", null, 0, null, null, null),
         )
         override fun getGamesByEntityStream(
             type: GameEntityType,
-            entityId: Int
+            entityId: Int,
         ): Flow<PagingData<GameResult>> = flowOf(PagingData.empty())
     }
 
@@ -148,6 +148,6 @@ class GameDetailViewModelTest {
         slug = null,
         stores = emptyList(),
         tags = emptyList(),
-        website = null
+        website = null,
     )
 }

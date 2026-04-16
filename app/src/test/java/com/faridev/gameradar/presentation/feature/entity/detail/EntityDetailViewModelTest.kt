@@ -53,14 +53,14 @@ class EntityDetailViewModelTest {
             gamesCount = 44,
             imageBackground = null,
             description = null,
-            domain = null
+            domain = null,
         )
         val repo = FakeRepo(
-            detailsResult = UiState.Success(details)
+            detailsResult = UiState.Success(details),
         )
         val vm = EntityDetailViewModel(
             FetchEntityDetailsUseCase(repo),
-            FetchGamesByEntityUseCase(repo)
+            FetchGamesByEntityUseCase(repo),
         )
 
         vm.gamesFlow.test(timeout = 3.seconds) {
@@ -84,7 +84,7 @@ class EntityDetailViewModelTest {
         val repo = FakeRepo(detailsResult = UiState.Error(AppError.Timeout))
         val vm = EntityDetailViewModel(
             FetchEntityDetailsUseCase(repo),
-            FetchGamesByEntityUseCase(repo)
+            FetchGamesByEntityUseCase(repo),
         )
 
         vm.load(GameEntityType.Genres, entityId = 4)
@@ -92,7 +92,7 @@ class EntityDetailViewModelTest {
         assertTrue(vm.detailsState is UiState.Error)
 
         repo.detailsResult = UiState.Success(
-            GameEntityDetails(4, "Action", "action", 100, null, null, null)
+            GameEntityDetails(4, "Action", "action", 100, null, null, null),
         )
         vm.retry()
         dispatcher.scheduler.advanceUntilIdle()
@@ -104,7 +104,7 @@ class EntityDetailViewModelTest {
     // -- Fakes ----------------------------------------------------------------
 
     private class FakeRepo(
-        var detailsResult: UiState<GameEntityDetails>
+        var detailsResult: UiState<GameEntityDetails>,
     ) : GameRepository {
         override fun getGamesStream(): Flow<PagingData<GameResult>> = flowOf(PagingData.empty())
         override suspend fun fetchGamesList(page: Int, pageSize: Int): UiState<GamesList> =
@@ -116,15 +116,15 @@ class EntityDetailViewModelTest {
         override suspend fun fetchEntityList(
             type: GameEntityType,
             page: Int,
-            pageSize: Int
+            pageSize: Int,
         ): UiState<GameEntityList> = UiState.Success(GameEntityList(0, null, null, emptyList()))
         override suspend fun fetchEntityDetails(
             type: GameEntityType,
-            entityId: Int
+            entityId: Int,
         ): UiState<GameEntityDetails> = detailsResult
         override fun getGamesByEntityStream(
             type: GameEntityType,
-            entityId: Int
+            entityId: Int,
         ): Flow<PagingData<GameResult>> = flowOf(PagingData.empty())
     }
 }

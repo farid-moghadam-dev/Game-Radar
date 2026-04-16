@@ -19,21 +19,19 @@ import kotlinx.coroutines.flow.emptyFlow
 fun getFontFamilyFromRes(
     @FontRes fontRes: Int,
     fontWeight: FontWeight = FontWeight.Normal,
-    fontStyle: FontStyle = FontStyle.Normal
-): FontFamily {
-    return FontFamily(
-        fonts = listOf(
-            Font(
-                resId = fontRes,
-                weight = fontWeight,
-                style = fontStyle
-            )
-        )
-    )
-}
+    fontStyle: FontStyle = FontStyle.Normal,
+): FontFamily = FontFamily(
+    fonts = listOf(
+        Font(
+            resId = fontRes,
+            weight = fontWeight,
+            style = fontStyle,
+        ),
+    ),
+)
 
 inline fun Modifier.noRippleClickable(
-    crossinline onClick: () -> Unit
+    crossinline onClick: () -> Unit,
 ): Modifier = composed {
     clickable(
         indication = null,
@@ -52,11 +50,11 @@ inline fun Modifier.noRippleCombinedClickable(
         indication = null,
         interactionSource = remember { MutableInteractionSource() },
         onClick = { onClick() },
-        onLongClick = { onLongClick() }
+        onLongClick = { onLongClick() },
     )
 }
 
-class NoRippleInteractionSource() : MutableInteractionSource {
+class NoRippleInteractionSource : MutableInteractionSource {
     override val interactions: Flow<Interaction> = emptyFlow()
     override suspend fun emit(interaction: Interaction) {}
     override fun tryEmit(interaction: Interaction) = true

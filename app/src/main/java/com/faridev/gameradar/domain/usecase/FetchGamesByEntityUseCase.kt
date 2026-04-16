@@ -10,7 +10,7 @@ class FetchGamesByEntityUseCase(private val gameRepository: GameRepository) {
 
     operator fun invoke(
         type: GameEntityType,
-        entityId: Int
+        entityId: Int,
     ): Flow<PagingData<GameResult>> =
         gameRepository.getGamesByEntityStream(type, entityId)
 }

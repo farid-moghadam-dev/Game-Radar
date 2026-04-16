@@ -7,12 +7,13 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-val localProperties = Properties().apply {
-    val localFile = rootProject.file("local.properties")
-    if (localFile.exists()) {
-        load(localFile.inputStream())
+val localProperties =
+    Properties().apply {
+        val localFile = rootProject.file("local.properties")
+        if (localFile.exists()) {
+            load(localFile.inputStream())
+        }
     }
-}
 
 android {
     namespace = "com.faridev.gameradar"
@@ -39,11 +40,11 @@ android {
 
         release {
             isMinifyEnabled = true
-            isShrinkResources = true
-            isDebuggable = false
+            /*isShrinkResources = true
+            isDebuggable = false*/
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }

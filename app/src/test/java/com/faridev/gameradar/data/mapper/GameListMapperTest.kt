@@ -21,11 +21,11 @@ class GameListMapperTest {
                     metacritic = 92,
                     parentPlatforms = listOf(
                         ParentPlatformDto(
-                            platform = ParentPlatformDto.Platform(id = 1, name = "PC", slug = "pc")
-                        )
-                    )
-                )
-            )
+                            platform = ParentPlatformDto.Platform(id = 1, name = "PC", slug = "pc"),
+                        ),
+                    ),
+                ),
+            ),
         )
 
         val domain = dto.toDomain()
@@ -43,8 +43,8 @@ class GameListMapperTest {
         val dto = GamesListResDto(
             count = 0,
             results = listOf(
-                GamesListResDto.Result(id = 1, name = "Minimal")
-            )
+                GamesListResDto.Result(id = 1, name = "Minimal"),
+            ),
         )
 
         val domain = dto.toDomain()

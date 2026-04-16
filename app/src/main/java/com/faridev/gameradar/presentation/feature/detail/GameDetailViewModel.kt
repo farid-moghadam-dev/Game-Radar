@@ -11,7 +11,7 @@ import com.faridev.gameradar.presentation.common.state.UiState
 import kotlinx.coroutines.launch
 
 class GameDetailViewModel(
-    private val fetchGameDetailsUseCase: FetchGameDetailsUseCase
+    private val fetchGameDetailsUseCase: FetchGameDetailsUseCase,
 ) : ViewModel() {
 
     var detailsState: UiState<GameDetails> by mutableStateOf(UiState.Loading)
