@@ -1,6 +1,10 @@
 # Game Radar
 
 <p align="center">
+  <img src="app/src/main/ic_launcher-playstore.png" alt="Coinollar Logo" width="120"/>
+</p>
+
+<p align="center">
   <a href="https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml"><img src="https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin" /></a>
   <a href="https://developer.android.com/jetpack/compose"><img src="https://img.shields.io/badge/Jetpack_Compose-2025.10-4285F4?logo=jetpackcompose&logoColor=white" alt="Compose" /></a>
@@ -29,13 +33,45 @@ Built end-to-end with **100% Kotlin** and **Jetpack Compose**, following a **Cle
 ## Screenshots
 
 <p align="center">
-  <img src="docs/screenshots/home.png"          width="24%" alt="Home feed" />
-  <img src="docs/screenshots/detail.png"        width="24%" alt="Game detail" />
-  <img src="docs/screenshots/drawer.png"        width="24%" alt="Navigation drawer" />
-  <img src="docs/screenshots/entity-detail.png" width="24%" alt="Entity detail" />
+  <img src="screenshots/Games%20List-Dark%20Mode.png"    width="240" alt="Home / games list"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/Game%20Details-Dark%20Mode.png"  width="240" alt="Game detail"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/Entity%20Details-Dark%20Mode.png" width="240" alt="Entity detail"/>
 </p>
 
-> Drop captures in [`docs/screenshots/`](docs/screenshots/) — see that folder's README for a suggested capture list.
+<p align="center">
+  <em>Home · Game Detail · Entity Detail</em>
+</p>
+
+<details>
+<summary><strong>More screens</strong></summary>
+
+<p align="center">
+  <img src="screenshots/Games%20List-Light%20Mode.png"                 width="220" alt="Games list (Light)"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/Game%20Card%20Press%20Animation-Light%20Mode.png" width="220" alt="Game card press animation (Light)"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/Nav%20Drawer-Light%20Mode.png"                 width="220" alt="Navigation drawer (Light)"/>
+</p>
+
+<p align="center">
+  <img src="screenshots/Nav%20Drawer-Dark%20Mode.png"  width="220" alt="Navigation drawer (Dark)"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/Platforms-Dark%20Mode.png"     width="220" alt="Platforms list"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/Publishers-Dark%20Mode.png"    width="220" alt="Publishers list"/>
+</p>
+
+<p align="center">
+  <img src="screenshots/Developers-Dark%20Mode.png" width="220" alt="Developers list"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/Genres-Dark%20Mode.png"     width="220" alt="Genres list"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/Stores-Dark%20Mode.png"     width="220" alt="Stores list"/>
+</p>
+
+</details>
 
 ---
 
@@ -246,8 +282,6 @@ Every push / PR to `main` runs Spotless, Detekt, unit tests, Android Lint, and `
 - [ ] Search (RAWG `?search=` parameter)
 - [ ] Favorites (local Room persistence)
 - [ ] Offline cache for the games feed with a Paging 3 `RemoteMediator`
-- [ ] Screenshots gallery on the game detail screen
-- [ ] Dark-mode-aware dynamic color (Material You)
 - [ ] Split into Gradle modules (`:core`, `:data`, `:domain`, `:feature-*`)
 - [ ] Baseline Profile generation for startup / frame metrics
 
