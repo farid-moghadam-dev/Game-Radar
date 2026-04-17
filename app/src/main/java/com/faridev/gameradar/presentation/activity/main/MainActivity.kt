@@ -1,5 +1,6 @@
 package com.faridev.gameradar.presentation.activity.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -152,6 +153,7 @@ private fun DrawerItem(itemTitle: String, onClick: () -> Unit = {}) {
 }
 
 @Composable
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 private fun MainScreenContent(navController: NavHostController) {
     Scaffold(modifier = Modifier.fillMaxSize()) { _ ->
         NavHost(
