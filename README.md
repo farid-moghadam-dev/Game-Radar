@@ -170,7 +170,7 @@ com.faridev.gameradar
 
 ### Prerequisites
 
-- **Android Studio** Ladybug or newer (JBR / JDK 17)
+- **Android Studio** Ladybug or newer (JBR / JDK 21)
 - **Android SDK 35**, minSdk 24
 - A free **RAWG API key** — grab one at <https://rawg.io/apidocs>
 
