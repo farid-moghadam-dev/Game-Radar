@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml"><img src="https://github.com/farid-moghadam-dev/game-radar/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <a href="https://github.com/farid-moghadam-dev/Game-Radar/actions/workflows/ci.yml"><img src="https://github.com/farid-moghadam-dev/Game-Radar/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin" /></a>
   <a href="https://developer.android.com/jetpack/compose"><img src="https://img.shields.io/badge/Jetpack_Compose-2025.10-4285F4?logo=jetpackcompose&logoColor=white" alt="Compose" /></a>
   <a href="https://developer.android.com/tools/releases/platforms"><img src="https://img.shields.io/badge/minSdk-24-3DDC84?logo=android&logoColor=white" alt="Min SDK" /></a>
@@ -170,7 +170,7 @@ com.faridev.gameradar
 
 ### Prerequisites
 
-- **Android Studio** Ladybug or newer (JBR / JDK 21)
+- **Android Studio** Ladybug or newer (JBR / JDK 17)
 - **Android SDK 35**, minSdk 24
 - A free **RAWG API key** — grab one at <https://rawg.io/apidocs>
 
